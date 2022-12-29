@@ -23,7 +23,7 @@ const InvestorModal = ({setInvestorModalOpen, dataForInvestor}) => {
             <img
               style={{ height: 250, maxWidth: '17rem' }}
               src={dataForInvestor.profileImage}
-              alt="Profile Picture"
+              alt="ProfilePicture"
             />
           <div
             style={{

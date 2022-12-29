@@ -26,7 +26,7 @@ const routes = [
         icon: <MdOutlinePending />,
       },
       {
-        path: "/myproducts",
+        path: "/campaigntimerequest",
         name: "Time Extend Request",
         icon: <GiSandsOfTime />,
       },

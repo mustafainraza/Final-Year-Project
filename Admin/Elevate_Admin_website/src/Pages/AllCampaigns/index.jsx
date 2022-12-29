@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Menu from "./AllMenu";
 import AllCampaignsModal from "./AllCampaignsModal";
-import Categories from "../../Components/MyProducts/Categories";
-import items from "../../Components/MyProducts/data";
+import Categories from "../../Components/CampaignRequest/Categories";
+import items from "../../Components/CampaignRequest/data";
 
 
 const allCategories = ["all", ...new Set(items.map((item) => item.category))];

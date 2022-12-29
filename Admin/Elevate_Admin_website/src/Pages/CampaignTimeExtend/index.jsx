@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import Categories from "../../Components/MyProducts/Categories";
-import Menu from "../../Components/MyProducts/Menu";
-import items from "../../Components/MyProducts/dashboardData.js";
-import "./style.css";
-import Modal from "../../Components/CampaignDetails";
+import Categories from "../../Components/CampaignRequest/Categories";
+import items from "../../Components/CampaignRequest/data";
+import ExtendTimeMenu from "./ExtendTimeMenu";
+import ExtendTimeModal from "./ExtendTimeModal";
 
 const allCategories = ["all", ...new Set(items.map((item) => item.category))];
 
-const NewCampaignRequest = () => {
+const CampaignTimeExtendRequest = () => {
   const [menuItems, setMenuItems] = useState(items);
   const [activeCategory, setActiveCategory] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [dataForModal, setDataForModal] = useState({})
+  const [dataForModal, setDataForModal] = useState({});
   const categories = allCategories;
 
   const filterItems = (category) => {
@@ -25,13 +24,15 @@ const NewCampaignRequest = () => {
   };
   return (
     <>
-      {modalOpen && <Modal setOpenModal={setModalOpen} dataForModal={dataForModal}/>}
+      {modalOpen && (
+        <ExtendTimeModal setOpenModal={setModalOpen} dataForModal={dataForModal} />
+      )}
       <div className="myProduct-body">
         <main>
           <section className="section">
             <div className="title">
               {/* <img src={logo} alt="logo" className="logo" /> */}
-              <h2 style={{ fontSize: "3rem" }}>New Campaigns Request</h2>
+              <h2 style={{ fontSize: "3rem" }}>Time Extension Request</h2>
               <div className="underline"></div>
             </div>
             <Categories
@@ -39,7 +40,11 @@ const NewCampaignRequest = () => {
               activeCategory={activeCategory}
               filterItems={filterItems}
             />
-            <Menu items={menuItems} setModalOpen={setModalOpen} setDataForModal={setDataForModal}/>
+            <ExtendTimeMenu
+              items={menuItems}
+              setModalOpen={setModalOpen}
+              setDataForModal={setDataForModal}
+            />
           </section>
         </main>
       </div>
@@ -47,4 +52,4 @@ const NewCampaignRequest = () => {
   );
 };
 
-export default NewCampaignRequest;
+export default CampaignTimeExtendRequest;

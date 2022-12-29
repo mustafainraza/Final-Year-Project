@@ -23,7 +23,7 @@ const CampaignerModal = ({setCampaignerModalOpen, dataForCampaigner}) => {
             <img
               style={{ height: 250, maxWidth: '17rem' }}
               src={dataForCampaigner.profileImage}
-              alt="Profile Picture"
+              alt="ProfilePicture"
             />
           <div
             style={{

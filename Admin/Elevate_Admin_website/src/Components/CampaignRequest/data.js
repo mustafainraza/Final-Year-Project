@@ -67,7 +67,7 @@ const menu = [
     like: 8,
     img: './images/item-7.jpeg',
     desc: `carry jianbing normcore freegan. Viral single-origin coffee live-edge, pork belly cloud bread iceland put a bird `,
-    progress:100,
+    progress:95,
     hoursLeft:4,
   },
   {

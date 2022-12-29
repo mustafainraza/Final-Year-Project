@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Categories from "../../Components/MyProducts/Categories";
-import Menu from "../../Components/MyProducts/Menu";
-import items from "../../Components/MyProducts/data";
+import Categories from "../../Components/CampaignRequest/Categories";
+import Menu from "../../Components/CampaignRequest/Menu";
+import items from "../../Components/CampaignRequest/dashboardData.js";
 import "./style.css";
 import Modal from "../../Components/CampaignDetails";
 
 const allCategories = ["all", ...new Set(items.map((item) => item.category))];
 
-const MyProducts = () => {
+const NewCampaignRequest = () => {
   const [menuItems, setMenuItems] = useState(items);
   const [activeCategory, setActiveCategory] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,7 +31,7 @@ const MyProducts = () => {
           <section className="section">
             <div className="title">
               {/* <img src={logo} alt="logo" className="logo" /> */}
-              <h2 style={{ fontSize: "3rem" }}>Time Extension Request</h2>
+              <h2 style={{ fontSize: "3rem" }}>New Campaigns Request</h2>
               <div className="underline"></div>
             </div>
             <Categories
@@ -47,4 +47,4 @@ const MyProducts = () => {
   );
 };
 
-export default MyProducts;
+export default NewCampaignRequest;
