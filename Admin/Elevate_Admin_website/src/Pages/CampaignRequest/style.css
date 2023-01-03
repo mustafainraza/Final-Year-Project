@@ -42,7 +42,7 @@ p {
     width: 75vw;
     margin: 0 auto;
     max-width: 1170px;
-    min-height: 33rem;
+    min-height: 88vh;
 }
 
 @media screen and (min-width: 992px) {
