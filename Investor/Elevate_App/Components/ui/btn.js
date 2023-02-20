@@ -15,7 +15,7 @@ export default AppButton = (props) => (
 const styles = StyleSheet.create({
     appButtonContainer: {
         zIndex: 100,
-        backgroundColor: "#5552E6",
+        backgroundColor: "#D6252E",
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 12,

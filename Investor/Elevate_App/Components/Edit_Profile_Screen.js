@@ -21,7 +21,7 @@ function Edit_Profile_Screen({ navigation }) {
     myContext.setname(name);
     myContext.setcontactno(contactno);
     await axios
-      .patch(`http://192.168.0.109:3080/profile/editprofile`, {
+      .patch(`http://192.168.100.78:3080/profile/editprofile`, {
         name: name,
         contact: contactno,
         token: token,
@@ -36,7 +36,7 @@ function Edit_Profile_Screen({ navigation }) {
   };
   const edit_image = async () => {
     await axios
-      .patch(`http://192.168.0.109:3080/profile/editprofile`, {
+      .patch(`http://192.168.100.78:3080/profile/editprofile`, {
         image: myContext.pickedImagePath,
         token: token,
       })

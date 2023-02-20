@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 export async function createUser({ email, password, name, CNIC, contactno }) {
   const response = await axios.post(
-    "http://192.168.0.109:3080/Investors/register",
+    "http://192.168.100.78:3080/Investors/register",
     {
       email: email,
       password: password,
@@ -17,7 +17,7 @@ export async function createUser({ email, password, name, CNIC, contactno }) {
 }
 
 export async function loginUser(email, password) {
-  const response = await axios.post("http://192.168.0.109:3080/Investors/login", {
+  const response = await axios.post("http://192.168.100.78:3080/Investors/login", {
     email: email,
     password: password,
   });

@@ -14,11 +14,13 @@ import Project from "./project";
 import { MaterialIcons } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
+import RenderProfile from "./RenderProfile";
 
 
 export default function Details({ navigation, route }) {
   const [set, setData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
   const props = route.params;
   const [hours, sethours] = useState(0);
 
@@ -67,11 +69,10 @@ export default function Details({ navigation, route }) {
 
   const renderItem = ({ item }) => (
     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-      <Text style={{ fontSize: 18, fontWeight: "400" }}>{item.first_name}</Text>
-      <Text style={{ fontSize: 18, fontWeight: "400" }}>{item.funds}</Text>
+      <Text style={{ color: 'white', fontSize: 18, fontWeight: "400" }}>{item.first_name}</Text>
+      <Text style={{ color: 'white', fontSize: 18, fontWeight: "400" }}>{item.funds}</Text>
     </View>
   );
-
   return (
     <View style={{ backgroundColor: "#003047", flex: 1 }}>
       <View
@@ -112,8 +113,8 @@ export default function Details({ navigation, route }) {
             height: "100%",
           }}
         >
-          <View style={{ flex: 1, height: "100%" }}>
-            <MaterialIcons name="campaign" size={50} color="#D6252E" />
+          <View style={{ flex: 1, height: "100%", paddingTop: '2.5%' }}>
+            <MaterialIcons name="campaign" size={40} color="#D6252E" />
           </View>
           <View style={{ flex: 4, height: "50%", paddingTop: "2%" }}>
             <Text
@@ -126,16 +127,88 @@ export default function Details({ navigation, route }) {
             >
               Created by
             </Text>
-            <Text
+            <Pressable
+              onPress={() => {
+                setModalVisible2(true)
+              }
+              }
+            >
+              <Text
+                style={{
+                  fontWeight: "500",
+                  fontSize: 18,
+                  color: "white",
+                  fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
+                  fontStyle: "italic",
+                  textDecorationLine: "underline",
+                }}
+              >
+                {props.Name}
+              </Text>
+              <View style={styles.centeredView}>
+                <Modal
+                  animationType="fade"
+                  transparent={true}
+                  visible={modalVisible2}
+                  onRequestClose={() => {
+                    setModalVisible2(!modalVisible2);
+                  }}
+                  style={{ flex: 1 }}
+                >
+                  <Pressable
+                    style={styles.centeredView}
+                    onPress={() => { setModalVisible2(false) }
+                    }
+                  />
+                  <View
+                    style={[
+                      styles.modalView,
+                      {
+                        position: "absolute",
+                        alignSelf: "center",
+                        marginTop: "45%",
+                      },
+                    ]}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 18, fontWeight: "bold" }}>
+                        Campaigner Details
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        marginTop: "5%",
+                        height: "5%",
+                        borderTopWidth: 1,
+                      }}
+                    />
+                    {/* <FlatList
+                      data={set}
+                      renderItem={renderItem}
+                    // keyExtractor={item => item.C_ID}
+                    /> */}
+                    {<RenderProfile />}
+                  </View>
+                </Modal>
+              </View>
+            </Pressable>
+            {/* <Text
               style={{
                 fontWeight: "500",
                 fontSize: 18,
                 color: "white",
                 fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
+                fontStyle: "italic",
+                textDecorationLine: "underline",
               }}
             >
               {props.Name}
-            </Text>
+            </Text> */}
           </View>
           <Pressable
             onPress={() => {
@@ -187,10 +260,10 @@ export default function Details({ navigation, route }) {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text style={{ color: 'white', fontSize: 18, fontWeight: "bold" }}>
                       Name
                     </Text>
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    <Text style={{ color: 'white', fontSize: 18, fontWeight: "bold" }}>
                       Amount
                     </Text>
                   </View>
@@ -377,7 +450,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: "white",
-    width: "80%",
+    width: "90%",
     height: "50%",
     borderRadius: 20,
     padding: 20,
@@ -386,6 +459,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 10,
+    backgroundColor: '#003047'
   },
 
   modalText: {

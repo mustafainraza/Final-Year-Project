@@ -54,7 +54,7 @@ const Forgotpass = () => {
         >
           <Image
             style={styles.background}
-            source={require("../../assets/logo.png")}
+            source={require("../../assets/new.png")}
           />
         </View>
       </View>

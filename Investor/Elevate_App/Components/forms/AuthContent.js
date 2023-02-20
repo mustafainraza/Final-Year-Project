@@ -98,7 +98,7 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
         >
           <Image
             style={styles.background}
-            source={require("../../assets/logo.png")}
+            source={require("../../assets/new.png")}
           />
         </View>
       </View>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   background: {
     width: "80%",
     height: "80%",
-    resizeMode: "contain",
+    resizeMode: "center",
   },
   box: {
     position: "absolute",

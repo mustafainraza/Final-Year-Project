@@ -103,24 +103,31 @@ const d = [
   {
     id: 1,
     month: 1,
-    prog: 0.3,
-    title: "Newest Update",
-    by: "This is first update discription",
+    prog: 0.25,
+    title: "First Quater",
+    by: "This is first milestone discription",
 
   },
   {
     id: 4,
     month: 2,
-    prog: 0.9,
-    title: "Newest Update",
-    by: "This is second update discription",
+    prog: 0.5,
+    title: "Second Quater",
+    by: "This is second milestone discription",
   },
   {
     id: 23,
     month: 3,
+    prog: 0.75,
+    title: "Third Quater",
+    by: "This is third milestone discription",
+  },
+  {
+    id: 1,
+    month: 4,
     prog: 1,
-    title: "Newest Update",
-    by: "This is third update discription",
+    title: "Fourth Quater",
+    by: "This is fourth milestone discription",
   }
 ]
 

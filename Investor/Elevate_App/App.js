@@ -81,7 +81,7 @@ function AuthenticatedStack() {
   };
   const integratee = async () => {
     await axios
-      .get(`http://192.168.0.109:3080/profile/useprofile`, {
+      .get(`http://192.168.100.78:3080/profile/useprofile`, {
         headers: {
           "x-access-token": token,
         },

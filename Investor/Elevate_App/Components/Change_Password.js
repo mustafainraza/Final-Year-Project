@@ -11,7 +11,7 @@ function Change_Password() {
   const token = authCtx.token;
   const edit = async () => {
     await axios
-      .patch(`http://192.168.0.109:3080/profile/changepass`, {
+      .patch(`http://192.168.100.78:3080/profile/changepass`, {
         password: newpassword,
         currpass: currpassword,
         token: token,
