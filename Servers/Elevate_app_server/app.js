@@ -27,11 +27,26 @@ app.set("view engine", "ejs");
 app.get("/hello", (req, res) => {
   res.send("hello worldddddd");
 });
+
 const Investors = require("./router/Investors");
 app.use("/Investors", Investors);
-module.exports = app;
 
 const profile = require("./router/profile.js");
 app.use("/profile", profile);
+
+const campaign = require("./router/Campaign.js");
+app.use("/Campaign", campaign);
+
+const campaigner = require("./router/Campaigner.js");
+app.use("/campaigner", campaigner);
+
+const Backer = require("./router/Backers.js");
+app.use("/backer", Backer);
+
+const favourites = require("./router/Favourite.js");
+app.use("/favourite", favourites);
+
+const milestones = require("./router/milestones.js");
+app.use("/milestones", milestones);
 
 module.exports = app;

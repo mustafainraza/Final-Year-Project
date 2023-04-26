@@ -4,7 +4,6 @@ import {
   View,
   FlatList,
   Text,
-  VirtualizedList,
   ActivityIndicator,
 } from "react-native";
 import LottieView from "lottie-react-native";
@@ -12,129 +11,154 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import Project from "./project";
 import axios from "axios";
 import AppContext from "./forms/AppContext";
+import { AuthContext } from "../store/auth-context";
+import URL from "../config/env";
 
-
-const sum1 = 8000;
-const goal1 = 10000;
-const sum2 = 1000;
-const goal2 = 10000;
-const sum3 = 900;
-const goal3 = 1000;
-
-
-
-export default function POPULAR({ navigation }) {
+export default function Campaign({ navigation, route }) {
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
   const myContext = useContext(AppContext);
   const [set, setData] = useState(null);
   const [timeout, settime] = useState(true);
   const [isdata, setisdata] = useState(true);
+  const [likes, setlikes] = useState([]);
+  const [countlikes, setCountlikes] = useState([]);
+
   const animationRef = useRef(null);
 
-  const DaysLeft = (props) => {
-    let xd = Date.parse(props.data);
-    let z = new Date();
-    let x = (xd - z) / (1000 * 60 * 60);
-    if (x <= 0) {
-      return 0;
+  const sad = async () => {
+    let isUnmounted = false;
+    let api = "";
+    if (route.name === "POPULAR") {
+      api = `http://${URL.abc}/Campaign/popularprojectdetails?token=${token}`;
+    } else if (route.name === "NEWEST") {
+      api = `http://${URL.abc}/Campaign/newprojectdetails?token=${token}`;
     } else {
-      return Math.floor(x);
+      api = `http://${URL.abc}/Campaign/endingsoonprojectdetails?token=${token}`;
     }
+
+    settime(true);
+    await axios
+      .get(api)
+      .then(function (response) {
+        if (!isUnmounted) {
+          let temp = [];
+          for (var i = 0; i < response.data.length; i++) {
+            temp.push(response.data[i]);
+          }
+          setData(temp);
+          setTimeout(() => {
+            settime(false);
+          }, 2500);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    return () => {
+      isUnmounted = true;
+    };
   };
 
-  // const sad = async () => {
-  //   let isUnmounted = false;
-  //   settime(true);
-  //   await axios
-  //     .get(
-  //       "https://crowd-funding-api.herokuapp.com/projects/popularprojectdetails"
-  //     )
-  //     .then(function (response) {
-  //       if (!isUnmounted) {
-  //         let temp = [];
-  //         for (var i = 0; i < response.data.length; i++) {
-  //           temp.push(response.data[i]);
-  //         }
-  //         setData(temp);
-  //         setTimeout(() => {
-  //           settime(false);
-  //         }, 2500);
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  //   return () => {
-  //     isUnmounted = true;
-  //   };
-  // };
+  const checklike = async () => {
+    await axios
+      .get(`http://${URL.abc}/favourite/showlikes?token=${token}`, {
+        headers: {
+          investor_id: myContext.investor_id,
+        },
+      })
+      .then(function (response) {
+        setlikes(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const total_likes = async () => {
+    await axios
+      .get(`http://${URL.abc}/favourite/countlikes?token=${token}`)
+      .then(function (response) {
+        setCountlikes(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const refreshdata = () => {
     settime(true);
-    setData(Set);
+    sad();
+    checklike();
+    total_likes();
     setTimeout(() => {
       settime(false);
     }, 2500);
-
-
-  }
-
-  useEffect(() => {
-    setData(Set);
-    settime(false);
-    // console.log(route)
-  }, []);
-
-  // useEffect(() => {
-  //   if (set == null || set == undefined || set.length == 0) {
-  //     setisdata(true);
-  //   } else {
-  //     setisdata(true);
-  //   }
-  // }, [isdata, set]);
-
-  // const getItem = (set, index) => {
-  //   return set[index];
-  // };
+  };
 
   useEffect(() => {
     animationRef.current?.play();
+    sad();
+    total_likes();
   }, []);
-  const renderItem = ({ item }) => (
-    myContext.val == item.campaign_type || myContext.val == "all" ?
+
+  useEffect(() => {
+    if (myContext.investor_id) {
+      checklike();
+    }
+  }, [myContext.investor_id]);
+
+  const renderItem = ({ item }) =>
+    myContext.val == item.campaign_type || myContext.val == "all" ? (
       <Pressable
         style={styles.container}
         android_ripple={{ borderless: false, color: "lightgrey" }}
         onPress={() => {
           navigation.navigate("Details", {
-            title: item.title,
-            data: item.data,
-            disc: item.disc,
-            funded: item.funded,
-            backed: item.backed,
-            hours: item.hours,
-            Name: item.name,
-            C_ID: item.C_ID,
-            total: item.sum,
-            GOAL: item.goal,
+            title: item.campaign_title,
+            data: item.campaign_image,
+            disc: item.campaign_description,
+            funded: Math.ceil(
+              (item.campaign_earning / item.campaign_goal) * 100
+            ),
+            C_ID: item.campaigner_id,
+            GOAL: item.campaign_goal,
             campaign_type: item.campaign_type,
+            hours: item.hours,
+            backed: item.backers,
+            Name: item.campaigner_name,
+            total: item.campaign_earning,
+            campaign_id: item.campaign_id,
+            A: countlikes.find((Item) =>
+              Item.campaign_id === item.campaign_id ? Item.all_likes : null
+            ),
+            isLiked: likes.find((Item) =>
+              Item.campaign_id === item.campaign_id ? true : false
+            ),
           });
         }}
       >
         <Project
-          title={item.title}
-          disc={item.disc}
-          funded={item.funded}
-          backed={item.backed}
-          hours={<DaysLeft data={item.hours} />}
-          // data={"data:image/jpeg;base64," + item.C_IMAGE}
-          data={item.data}
-          C_ID={item.C_ID}
+          title={item.campaign_title}
+          disc={item.campaign_description}
+          funded={Math.ceil((item.campaign_earning / item.campaign_goal) * 100)}
+          backed={item.backers}
+          hours={item.hours}
+          data={item.campaign_image}
+          C_ID={item.campaigner_id}
           campaign_type={item.campaign_type}
+          campaign_id={item.campaign_id}
+          isLiked={likes.find((Item) =>
+            Item.campaign_id === item.campaign_id ? true : false
+          )}
+          A={countlikes.find((Item) =>
+            Item.campaign_id === item.campaign_id ? Item.all_likes : null
+          )}
         />
-      </Pressable> : ""
-
-
-  );
+      </Pressable>
+    ) : (
+      ""
+    );
   return (
     <View>
       {timeout ? (
@@ -173,83 +197,12 @@ export default function POPULAR({ navigation }) {
           renderItem={renderItem}
           onRefresh={refreshdata}
           refreshing={false}
-          keyExtractor={(item) => item.C_ID}
+          keyExtractor={(item) => item.campaign_id}
         />
       )}
     </View>
-
   );
 }
-const Set = [
-  {
-    title: "my project",
-    disc: 'This is project discription',
-    funded: Math.ceil((sum1 / goal1) * 100),
-    backed: 8,
-    hours: '2022-12-25',
-    data: require('../assets/project.jpeg'),
-    C_ID: 1,
-    name: 'Mustafain Raza',
-    goal: goal1,
-    sum: Math.ceil(sum1),
-    campaign_type: "equity",
-  },
-  {
-    title: "Cameron",
-    disc: 'This Cameron is basically a Bike Helmet and this is very important for bike riding',
-    funded: Math.ceil((sum2 / goal2) * 100),
-    backed: 10,
-    hours: '2022-12-28',
-    data: require('../assets/download.jpeg'),
-    C_ID: 2,
-    name: 'Murtaza',
-    goal: goal2,
-    sum: Math.ceil(sum2),
-    campaign_type: "profit",
-  },
-  {
-    title: "Our FYP",
-    disc: 'This is Our Final Year Project which needs to be funded so that we can work in the future',
-    funded: Math.ceil((sum3 / goal3) * 100),
-    backed: 20,
-    hours: '2022-12-30',
-    data: require('../assets/FYP.jpeg'),
-    C_ID: 3,
-    name: 'Basit',
-    goal: goal3,
-    sum: Math.ceil(sum3),
-    campaign_type: "donation",
-  },
-  {
-    title: "Demo FYP",
-    disc: 'This is Our Final Year Project which needs to be funded so that we can work in the future',
-    funded: Math.ceil((sum3 / goal3) * 100),
-    backed: 20,
-    hours: '2022-12-25',
-    data: require('../assets/FYP.jpeg'),
-    C_ID: 4,
-    name: 'Basit',
-    goal: goal3,
-    sum: Math.ceil(sum3),
-    campaign_type: "reward",
-  },
-  {
-    title: "Demo FYP",
-    disc: 'This is Our Final Year Project which needs to be funded so that we can work in the future',
-    funded: Math.ceil((sum3 / goal3) * 100),
-    backed: 20,
-    hours: '2022-12-25',
-    data: require('../assets/FYP.jpeg'),
-    C_ID: 5,
-    name: 'Basit',
-    goal: goal3,
-    sum: Math.ceil(sum3),
-    campaign_type: "reward",
-  }
-
-]
-
-
 
 export const styles = StyleSheet.create({
   container: {

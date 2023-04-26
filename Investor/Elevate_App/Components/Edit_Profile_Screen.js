@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Modal,
 } from "react-native";
+import URL from "../config/env";
 import AppContext from "./forms/AppContext";
 import { Avatar, TextInput } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
@@ -21,7 +22,7 @@ function Edit_Profile_Screen({ navigation }) {
     myContext.setname(name);
     myContext.setcontactno(contactno);
     await axios
-      .patch(`http://192.168.100.78:3080/profile/editprofile`, {
+      .patch(`http://${URL.abc}/profile/editprofile`, {
         name: name,
         contact: contactno,
         token: token,
@@ -36,7 +37,7 @@ function Edit_Profile_Screen({ navigation }) {
   };
   const edit_image = async () => {
     await axios
-      .patch(`http://192.168.100.78:3080/profile/editprofile`, {
+      .patch(`http://${URL.abc}/profile/editprofile`, {
         image: myContext.pickedImagePath,
         token: token,
       })

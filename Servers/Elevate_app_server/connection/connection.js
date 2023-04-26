@@ -4,7 +4,7 @@ const client = new Client({
   user: "postgres",
   port: 5432,
   password: "12345",
-  database: "Elevate_Local",
+  database: "Elevate",
 });
 // const { Client } = require("pg");
 // const client = new Client({

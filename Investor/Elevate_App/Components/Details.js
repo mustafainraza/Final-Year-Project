@@ -8,34 +8,81 @@ import {
   StyleSheet,
   FlatList,
 } from "react-native";
-// import axios from "axios";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
 import Project from "./project";
 import { MaterialIcons } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import RenderProfile from "./RenderProfile";
-
+import { AuthContext } from "../store/auth-context";
+import URL from "../config/env";
 
 export default function Details({ navigation, route }) {
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
   const [set, setData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
+  const [campaignerdetails, setCampaignerdetails] = useState([]);
   const props = route.params;
-  const [hours, sethours] = useState(0);
+  const [hours, sethours] = useState(props.hours);
+  const [backerdetails, setbackerdetails] = useState([]);
 
-  useEffect(() => {
-    let xd = Date.parse(props.hours);
-    let z = new Date();
-    let x = (xd - z) / (1000 * 60 * 60);
-    if (x <= 0) {
-      sethours(0);
-    } else {
-      sethours(Math.floor(x));
-    }
-  }, [hours]);
+  // useEffect(() => {
+  //   let xd = Date.parse(props.hours);
+  //   let z = new Date();
+  //   let x = (xd - z) / (1000 * 60 * 60);
+  //   if (x <= 0) {
+  //     sethours(0);
+  //   } else {
+  //     sethours(Math.floor(x));
+  //   }
+  // }, [hours]);
 
   const track_update = false;
+
+  const getcampaignerdetails = async () => {
+    const { C_ID } = props;
+    await axios
+      .get(`http://${URL.abc}/Campaigner/campaignerdetails?token=${token}`, {
+        headers: {
+          campaigner_id: C_ID,
+        },
+      })
+      .then(function (response) {
+        setCampaignerdetails(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const getbackers = async () => {
+    const { campaign_id } = props;
+    let getURL = "";
+    if (props.campaign_type == "profit") {
+      getURL = `http://${URL.abc}/backer/backersprofit?token=${token}`;
+    } else if (props.campaign_type == "reward") {
+      getURL = `http://${URL.abc}/backer/backersreward?token=${token}`;
+    } else if (props.campaign_type == "equity") {
+      getURL = `http://${URL.abc}/backer/backerequity?token=${token}`;
+    } else {
+      getURL = `http://${URL.abc}/backer/backerdonation?token=${token}`;
+    }
+    await axios
+      .get(getURL, {
+        headers: {
+          campaign_id: campaign_id,
+        },
+      })
+      .then(function (response) {
+        setbackerdetails(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   // const sett = async () => {
   //   let isUnmounted = false;
@@ -65,12 +112,26 @@ export default function Details({ navigation, route }) {
 
   useEffect(() => {
     setData(Set);
+    getcampaignerdetails();
+    getbackers();
   }, []);
 
   const renderItem = ({ item }) => (
     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-      <Text style={{ color: 'white', fontSize: 18, fontWeight: "400" }}>{item.first_name}</Text>
-      <Text style={{ color: 'white', fontSize: 18, fontWeight: "400" }}>{item.funds}</Text>
+      <Text style={{ color: "white", fontSize: 18, fontWeight: "400" }}>
+        {item.investor_name}
+      </Text>
+      <Text style={{ color: "white", fontSize: 18, fontWeight: "400" }}>
+        {props.campaign_type == "reward"
+          ? item.campaign_reward_amount
+          : props.campaign_type == "profit"
+          ? item.investor_amount
+          : props.campaign_type == "equity"
+          ? item.campaign_equity_amount
+          : props.campaign_type == "donation"
+          ? item.investor_donation_amount
+          : ""}
+      </Text>
     </View>
   );
   return (
@@ -88,21 +149,19 @@ export default function Details({ navigation, route }) {
             disc={props.disc}
             funded={props.funded}
             backed={props.backed}
-            hours={hours}
-            // data={"data:image/jpeg;base64," + item.C_IMAGE}
+            hours={props.hours}
             data={props.data}
             C_ID={props.C_ID}
             campaign_type={props.campaign_type}
-
+            isLiked={props.isLiked}
+            A={props.A}
           />
         </View>
 
         <View style={{ marginLeft: "13%" }}>
           <Text style={{ color: "white" }}>Goal : {props.GOAL}</Text>
 
-          <Text style={{ color: "white" }}>
-            Total Funded: {props.total}
-          </Text>
+          <Text style={{ color: "white" }}>Total Funded: {props.total}</Text>
         </View>
         <View
           style={{
@@ -113,7 +172,7 @@ export default function Details({ navigation, route }) {
             height: "100%",
           }}
         >
-          <View style={{ flex: 1, height: "100%", paddingTop: '2.5%' }}>
+          <View style={{ flex: 1, height: "100%", paddingTop: "2.5%" }}>
             <MaterialIcons name="campaign" size={40} color="#D6252E" />
           </View>
           <View style={{ flex: 4, height: "50%", paddingTop: "2%" }}>
@@ -129,9 +188,9 @@ export default function Details({ navigation, route }) {
             </Text>
             <Pressable
               onPress={() => {
-                setModalVisible2(true)
-              }
-              }
+                setModalVisible2(true);
+                // getcampaignerdetails();
+              }}
             >
               <Text
                 style={{
@@ -157,8 +216,9 @@ export default function Details({ navigation, route }) {
                 >
                   <Pressable
                     style={styles.centeredView}
-                    onPress={() => { setModalVisible2(false) }
-                    }
+                    onPress={() => {
+                      setModalVisible2(false);
+                    }}
                   />
                   <View
                     style={[
@@ -176,7 +236,13 @@ export default function Details({ navigation, route }) {
                         justifyContent: "center",
                       }}
                     >
-                      <Text style={{ color: 'white', fontSize: 18, fontWeight: "bold" }}>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: "bold",
+                        }}
+                      >
                         Campaigner Details
                       </Text>
                     </View>
@@ -192,7 +258,7 @@ export default function Details({ navigation, route }) {
                       renderItem={renderItem}
                     // keyExtractor={item => item.C_ID}
                     /> */}
-                    {<RenderProfile />}
+                    {<RenderProfile data={campaignerdetails} />}
                   </View>
                 </Modal>
               </View>
@@ -212,9 +278,8 @@ export default function Details({ navigation, route }) {
           </View>
           <Pressable
             onPress={() => {
-              setModalVisible(true)
-            }
-            }
+              setModalVisible(true);
+            }}
             style={{
               height: "55%",
               width: "28%",
@@ -241,8 +306,9 @@ export default function Details({ navigation, route }) {
               >
                 <Pressable
                   style={styles.centeredView}
-                  onPress={() => { setModalVisible(false) }
-                  }
+                  onPress={() => {
+                    setModalVisible(false);
+                  }}
                 />
                 <View
                   style={[
@@ -260,10 +326,22 @@ export default function Details({ navigation, route }) {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 18,
+                        fontWeight: "bold",
+                      }}
+                    >
                       Name
                     </Text>
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 18,
+                        fontWeight: "bold",
+                      }}
+                    >
                       Amount
                     </Text>
                   </View>
@@ -275,9 +353,9 @@ export default function Details({ navigation, route }) {
                     }}
                   />
                   <FlatList
-                    data={set}
+                    data={backerdetails}
                     renderItem={renderItem}
-                  // keyExtractor={item => item.C_ID}
+                    // keyExtractor={item => item.C_ID}
                   />
                 </View>
               </Modal>
@@ -296,18 +374,14 @@ export default function Details({ navigation, route }) {
         onPress={() => {
           navigation.navigate("Track Progress", {
             title: "Track Milestone",
+            campaign_id: props.campaign_id,
           });
         }}
       >
         <LinearGradient
           // Button Linear Gradient
-          colors={
-
-            ["#D6252E", "#003047"]
-
-          }
+          colors={["#D6252E", "#003047"]}
         >
-
           <Text
             style={{
               fontSize: 22,
@@ -315,9 +389,8 @@ export default function Details({ navigation, route }) {
               fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
               width: "100%",
               height: "100%",
-              paddingLeft: '38%',
-              paddingTop: '5%'
-
+              paddingLeft: "38%",
+              paddingTop: "5%",
             }}
           >
             Updates
@@ -339,13 +412,8 @@ export default function Details({ navigation, route }) {
       >
         <LinearGradient
           // Button Linear Gradient
-          colors={
-
-            ["#D6252E", "#003047"]
-
-          }
+          colors={["#D6252E", "#003047"]}
         >
-
           <Text
             style={{
               fontSize: 22,
@@ -359,9 +427,8 @@ export default function Details({ navigation, route }) {
               // alignItems: "center",
               // alignSelf: "center",
               // alignContent: "center",
-              paddingLeft: '35%',
-              paddingTop: '5%'
-
+              paddingLeft: "35%",
+              paddingTop: "5%",
             }}
           >
             Comments
@@ -386,20 +453,21 @@ export default function Details({ navigation, route }) {
           borderRadius: 30,
         }}
         onPress={() => {
-          props.campaign_type == "reward" || props.campaign_type == "equity" ?
-            navigation.navigate("Rewards", {
-              C_ID: props.C_ID,
-              campaign_type: props.campaign_type,
-            }) : props.campaign_type == "profit" ? navigation.navigate("Profitbased Investment", {
-              C_ID: props.C_ID,
-            }) : navigation.navigate("Donationbased Investment", {
-              C_ID: props.C_ID,
-            })
+          props.campaign_type == "reward" || props.campaign_type == "equity"
+            ? navigation.navigate("Rewards", {
+                C_ID: props.C_ID,
+                campaign_type: props.campaign_type,
+              })
+            : props.campaign_type == "profit"
+            ? navigation.navigate("Profitbased Investment", {
+                C_ID: props.C_ID,
+              })
+            : navigation.navigate("Donationbased Investment", {
+                C_ID: props.C_ID,
+              });
         }}
       >
-
         {hours > 0 ? (
-
           <Text
             style={{
               fontSize: 20,
@@ -423,22 +491,20 @@ export default function Details({ navigation, route }) {
           </Text>
         )}
       </Pressable>
-
-    </View >
+    </View>
   );
 }
 
 const Set = [
   {
-    first_name: 'Mustafain',
-    funds: 3000
+    first_name: "Mustafain",
+    funds: 3000,
   },
   {
-    first_name: 'Raza',
-    funds: 2000
+    first_name: "Raza",
+    funds: 2000,
   },
-
-]
+];
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -459,7 +525,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 10,
-    backgroundColor: '#003047'
+    backgroundColor: "#003047",
   },
 
   modalText: {

@@ -4,6 +4,7 @@ import AppContext from "./forms/AppContext";
 import axios from "axios";
 import { Platform } from "react-native";
 import { AuthContext } from "../store/auth-context";
+import URL from '.././config/env'
 
 
 function Change_Password() {
@@ -11,7 +12,7 @@ function Change_Password() {
   const token = authCtx.token;
   const edit = async () => {
     await axios
-      .patch(`http://192.168.100.78:3080/profile/changepass`, {
+      .patch(`http://${URL.abc}/profile/changepass`, {
         password: newpassword,
         currpass: currpassword,
         token: token,

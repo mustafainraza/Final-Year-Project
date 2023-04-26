@@ -29,7 +29,6 @@ import BackedProjects from "./BackedProjects";
 const Tab = createMaterialTopTabNavigator();
 const Profile = ({ navigation }) => {
   const myContext = useContext(AppContext);
-  const name = "Syed Basit Abbas ";
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
       <View
@@ -281,8 +280,8 @@ function BackedScrenn({ navigation }) {
         keyExtractor={(item, index) => {
           return item.C_ID;
         }}
-      // onRefresh={fetch_reward}
-      // refreshing={loader}
+        // onRefresh={fetch_reward}
+        // refreshing={loader}
       />
       <View style={{ marginTop: "3%" }}></View>
       {Platform.OS === "ios" ? (
@@ -340,8 +339,8 @@ function RewardScreen() {
         keyExtractor={(item, index) => {
           return index;
         }}
-      // onRefresh={fetch_reward}
-      // refreshing={loader}
+        // onRefresh={fetch_reward}
+        // refreshing={loader}
       />
     </View>
   );
@@ -349,70 +348,69 @@ function RewardScreen() {
 const backset = [
   {
     title: "my project",
-    disc: 'This is project discription',
+    disc: "This is project discription",
     funded: Math.ceil((sum1 / goal1) * 100),
     backed: 8,
-    hours: '2022-12-25',
-    data: require('../assets/project.jpeg'),
+    hours: "2022-12-25",
+    data: require("../assets/project.jpeg"),
     C_ID: 1,
-    name: 'Mustafain Raza',
+    name: "Mustafain Raza",
     goal: goal1,
     sum: Math.ceil(sum1),
     campaign_type: "equity",
   },
   {
     title: "Cameron",
-    disc: 'This Cameron is basically a Bike Helmet and this is very important for bike riding',
+    disc: "This Cameron is basically a Bike Helmet and this is very important for bike riding",
     funded: Math.ceil((sum2 / goal2) * 100),
     backed: 10,
-    hours: '2022-12-28',
-    data: require('../assets/download.jpeg'),
+    hours: "2022-12-28",
+    data: require("../assets/download.jpeg"),
     C_ID: 2,
-    name: 'Murtaza',
+    name: "Murtaza",
     goal: goal2,
     sum: Math.ceil(sum2),
     campaign_type: "profit",
   },
   {
     title: "Our FYP",
-    disc: 'This is Our Final Year Project which needs to be funded so that we can work in the future',
+    disc: "This is Our Final Year Project which needs to be funded so that we can work in the future",
     funded: Math.ceil((sum3 / goal3) * 100),
     backed: 20,
-    hours: '2022-11-30',
-    data: require('../assets/FYP.jpeg'),
+    hours: "2022-11-30",
+    data: require("../assets/FYP.jpeg"),
     C_ID: 3,
-    name: 'Basit',
+    name: "Basit",
     goal: goal3,
     sum: Math.ceil(sum3),
     campaign_type: "donation",
   },
   {
     title: "Demo FYP",
-    disc: 'This is Our Final Year Project which needs to be funded so that we can work in the future',
+    disc: "This is Our Final Year Project which needs to be funded so that we can work in the future",
     funded: Math.ceil((sum3 / goal3) * 100),
     backed: 20,
-    hours: '2022-12-25',
-    data: require('../assets/FYP.jpeg'),
+    hours: "2022-12-25",
+    data: require("../assets/FYP.jpeg"),
     C_ID: 4,
-    name: 'Basit',
+    name: "Basit",
     goal: goal3,
     sum: Math.ceil(sum3),
     campaign_type: "reward",
   },
   {
     title: "Demo FYP",
-    disc: 'This is Our Final Year Project which needs to be funded so that we can work in the future',
+    disc: "This is Our Final Year Project which needs to be funded so that we can work in the future",
     funded: Math.ceil((sum3 / goal3) * 100),
     backed: 20,
-    hours: '2022-12-25',
-    data: require('../assets/FYP.jpeg'),
+    hours: "2022-12-25",
+    data: require("../assets/FYP.jpeg"),
     C_ID: 5,
-    name: 'Basit',
+    name: "Basit",
     goal: goal3,
     sum: Math.ceil(sum3),
     campaign_type: "reward",
-  }
-
+  },
 ];
 const rewardset = [
   {

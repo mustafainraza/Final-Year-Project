@@ -13,20 +13,20 @@ import Signup from "./screens/Signup";
 import { Pressable } from "react-native";
 import Forgotpass from "./Components/forms/forgotpass";
 
-import Start from './screens/start';
-import Drawer_Nav from './Components/Drawer_Nav';
-import Details from './Components/Details';
-import TrackUpdates from './Components/TrackUpdates';
-import Rewards from './Components/Reward.js';
-import Newscreen from './Components/Newscreen';
-import AppContext from './Components/forms/AppContext';
+import Start from "./screens/start";
+import Drawer_Nav from "./Components/Drawer_Nav";
+import Details from "./Components/Details";
+import TrackUpdates from "./Components/TrackUpdates";
+import Rewards from "./Components/Reward.js";
+import Newscreen from "./Components/Newscreen";
+import AppContext from "./Components/forms/AppContext";
 import axios from "axios";
+import URL from "./config/env";
 
 import Profitbased_Investment from "./Components/Profitbased_Investment";
 import Donationbased_Investment from "./Components/Donationbased_Investment";
 
 const Stack = createNativeStackNavigator();
-
 
 function AuthStack() {
   return (
@@ -57,6 +57,7 @@ function AuthenticatedStack() {
   const [cnic, setcnic] = useState("");
   const [password, setpassword] = useState("");
   const [val, setval] = useState("all");
+  const [investor_id, setInvestor_id] = useState(0);
   const imagesettings = {
     val,
     setval,
@@ -78,10 +79,12 @@ function AuthenticatedStack() {
     setcnic,
     password,
     setpassword,
+    investor_id,
+    setInvestor_id,
   };
   const integratee = async () => {
     await axios
-      .get(`http://192.168.100.78:3080/profile/useprofile`, {
+      .get(`http://${URL.abc}/profile/useprofile`, {
         headers: {
           "x-access-token": token,
         },
@@ -95,11 +98,12 @@ function AuthenticatedStack() {
         setPickedImagePath(tempp.investor_image);
         setcnic(tempp.investor_cnic);
         setpassword(tempp.investor_password);
+        setInvestor_id(tempp.investor_id);
         SetIs_data(true);
         // console.log(tempp.C_IMAGE);
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error.message);
       });
   };
   useEffect(() => {
@@ -107,16 +111,15 @@ function AuthenticatedStack() {
     // console.log(temp[0]);
   }, [email]);
 
-
   return (
-    <AppContext.Provider value={imagesettings} >
+    <AppContext.Provider value={imagesettings}>
       <Stack.Navigator
         initialRouteName="Drawer_Nav"
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name='Drawer_Nav' component={Drawer_Nav} />
+        <Stack.Screen name="Drawer_Nav" component={Drawer_Nav} />
         <Stack.Screen
           name="Details"
           component={Details}
@@ -129,10 +132,9 @@ function AuthenticatedStack() {
             },
             headerTitleStyle: {
               fontSize: 20,
-              color: "white"
+              color: "white",
             },
           }}
-
         ></Stack.Screen>
         <Stack.Screen
           name="Track Progress"
@@ -146,7 +148,7 @@ function AuthenticatedStack() {
             },
             headerTitleStyle: {
               fontSize: 20,
-              color: "white"
+              color: "white",
             },
           }}
         />
@@ -226,12 +228,11 @@ function Root() {
 }
 
 export default function App() {
-
   return (
     <>
       <StatusBar style="light" />
 
-      <AuthContextProvider >
+      <AuthContextProvider>
         <Root />
       </AuthContextProvider>
     </>
@@ -241,8 +242,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

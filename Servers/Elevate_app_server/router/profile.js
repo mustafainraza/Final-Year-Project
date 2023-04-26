@@ -55,15 +55,14 @@ router.get("/useprofile", auth, (req, res) => {
     (error, result) => {
       if (!error) {
         res.status(200).send(result.rows);
-        console.log("Edit successfully");
       } else {
         res.send("kk");
         console.log(error);
-        console.log("not updated");
       }
     }
   );
 });
+
 router.patch("/changepass", auth, async (req, res) => {
   const { password, currpass } = req.body;
   const user = req.user.email;

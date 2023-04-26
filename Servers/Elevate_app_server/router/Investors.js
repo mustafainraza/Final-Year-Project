@@ -65,7 +65,6 @@ router.post("/register", (req, res) => {
                 }
               );
               res.status(201).send(token);
-              console.log(token);
             }
           );
         }
@@ -118,7 +117,7 @@ router.post("/login", async (req, res) => {
             res.status(400).send("Invalid Credentials");
           }
         } else {
-          res.status(400).send("Invalid Credentials");
+          res.status(400).send("Invalid Email");
         }
       }
     );
@@ -143,7 +142,7 @@ router.post("/forgot-pass", async (req, res) => {
               expiresIn: "15m",
             }
           );
-          const link = `http://192.168.0.109:3080/Investors/reset-pass/${email}/${token}`;
+          const link = `http://192.168.100.78:3080/Investors/reset-pass/${email}/${token}`;
 
           var transporter = nodemailer.createTransport({
             service: "gmail",

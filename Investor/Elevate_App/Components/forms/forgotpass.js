@@ -5,10 +5,11 @@ import Flatbutton from "../ui/Flatbutton";
 import { useNavigation } from "@react-navigation/native";
 import Input from "../ui/Input";
 import Button from "../ui/buttons";
+import URL from '../../config/env'
 const Forgotpass = () => {
   const edit = async () => {
     await axios
-      .post(`http://192.168.0.109:3080/Investors/forgot-pass`, {
+      .post(`http://${URL.abc}/Investors/forgot-pass`, {
         email: enteredEmail,
       })
       .then(function (response) {
