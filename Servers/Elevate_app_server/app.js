@@ -49,4 +49,10 @@ app.use("/favourite", favourites);
 const milestones = require("./router/milestones.js");
 app.use("/milestones", milestones);
 
+const backed_projects = require("./router/Backed_Projects.js");
+app.use("/projects", backed_projects);
+
+const getrewards = require("./router/Rewards.js");
+app.use("/rewards", getrewards);
+
 module.exports = app;

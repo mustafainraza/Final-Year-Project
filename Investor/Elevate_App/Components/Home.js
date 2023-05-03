@@ -26,13 +26,7 @@ export default function AllProjects() {
         },
       }}
     >
-      <Tab.Screen
-        name="POPULAR"
-        component={Campaign}
-        api={"XDDDDDDDDDDDDDDD"}
-        Title="dddddddddddd"
-        options={{ header: "ddddddddddddd" }}
-      />
+      <Tab.Screen name="POPULAR" component={Campaign} />
 
       <Tab.Screen name="NEWEST" component={Campaign} />
 

@@ -33,7 +33,7 @@ export default function Project(props) {
     if (props.A) {
       setcountlike(props.A.all_likes);
     }
-  }, [props.funded, props.backed, props.hours]);
+  }, [props.funded, props.backed, props.hours, props.A]);
 
   const addLike = async () => {
     const { campaign_id } = props;
@@ -51,17 +51,19 @@ export default function Project(props) {
   };
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      if (isLiked) {
-        animation.current.play(66, 66);
+    if (!props.isbacked) {
+      if (isFirstRun.current) {
+        if (isLiked) {
+          animation.current.play(66, 66);
+        } else {
+          animation.current.play(19, 19);
+        }
+        isFirstRun.current = false;
+      } else if (isLiked) {
+        animation.current.play(19, 50);
       } else {
-        animation.current.play(19, 19);
+        animation.current.play(0, 19);
       }
-      isFirstRun.current = false;
-    } else if (isLiked) {
-      animation.current.play(19, 50);
-    } else {
-      animation.current.play(0, 19);
     }
   }, [isLiked]);
 
@@ -83,42 +85,33 @@ export default function Project(props) {
           }}
           source={{ uri: "data:image/jpeg;base64," + props.data }}
         />
-        {/* <Text
-          style={{
-            color: "black",
-            fontSize: 12,
-            paddingRight: 35,
-            textAlign: "center",
-            paddingTop: 18,
-            position: "absolute",
-            alignSelf: "flex-end",
-          }}
-        >
-          {countlike > 1000 ? countlike / 1000 + "k" : countlike}
-        </Text> */}
-        <Pressable
-          style={{ position: "absolute", alignSelf: "flex-end" }}
-          onPress={() => {
-            setLiked(!isLiked);
-            addLike();
-            if (isLiked) {
-              setcountlike(parseInt(countlike) - 1);
-            } else {
-              setcountlike(parseInt(countlike) + 1);
-            }
-          }}
-        >
-          <LottieView
-            style={{
-              height: 80,
-              width: 80,
+        {!props.isbacked ? (
+          <Pressable
+            style={{ position: "absolute", alignSelf: "flex-end" }}
+            onPress={() => {
+              setLiked(!isLiked);
+              addLike();
+              if (isLiked) {
+                setcountlike(parseInt(countlike) - 1);
+              } else {
+                setcountlike(parseInt(countlike) + 1);
+              }
             }}
-            ref={animation}
-            source={require("../assets/like.json")}
-            autoPlay={false}
-            loop={false}
-          />
-        </Pressable>
+          >
+            <LottieView
+              style={{
+                height: 80,
+                width: 80,
+              }}
+              ref={animation}
+              source={require("../assets/like.json")}
+              autoPlay={false}
+              loop={false}
+            />
+          </Pressable>
+        ) : (
+          ""
+        )}
       </View>
       <View style={{ margin: 10, height: "50%" }}>
         <View style={{ height: "25%" }}>
@@ -156,16 +149,20 @@ export default function Project(props) {
             >
               Campaign Type: {props.campaign_type}
             </Text>
-            <Text
-              style={{
-                fontWeight: "100",
-                fontSize: 16,
-                color: "lightgreen",
-                fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
-              }}
-            >
-              Likes : {countlike > 1000 ? countlike / 1000 + "k" : countlike}
-            </Text>
+            {!props.isbacked ? (
+              <Text
+                style={{
+                  fontWeight: "100",
+                  fontSize: 16,
+                  color: "lightgreen",
+                  fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
+                }}
+              >
+                Likes : {countlike > 1000 ? countlike / 1000 + "k" : countlike}
+              </Text>
+            ) : (
+              ""
+            )}
           </View>
         </View>
         <View

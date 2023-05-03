@@ -1,10 +1,5 @@
-const sum1 = 8000;
-const goal1 = 10000;
-const sum2 = 1000;
-const goal2 = 10000;
-const sum3 = 900;
-const goal3 = 1000;
 import React, { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../store/auth-context";
 import {
   View,
   Text,
@@ -26,6 +21,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import ProjectRewards from "./ProjectRewards";
 import BackedProjects from "./BackedProjects";
+import axios from "axios";
+import URL from "../config/env";
 const Tab = createMaterialTopTabNavigator();
 const Profile = ({ navigation }) => {
   const myContext = useContext(AppContext);
@@ -198,23 +195,38 @@ const Profile = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
 function BackedScrenn({ navigation }) {
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
+  const myContext = useContext(AppContext);
+
   const backedscreen_text1 = "Explore Creative Projects";
   const backedscreen_text2 =
     "Pledge to your favourites, then view all the projects you've backed here.";
-  const [data, setData] = useState(true);
   const [rewards, setRewards] = useState([]);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
+
+  const getbackedProjects = async () => {
+    await axios
+      .get(`http://${URL.abc}/projects/backedprojects?token=${token}`, {
+        headers: {
+          investor_id: myContext.investor_id,
+        },
+      })
+      .then(function (response) {
+        setRewards(response.data);
+        setLoader(false);
+      })
+      .catch((error) => {
+        Alert.alert(error);
+      });
+  };
+
   useEffect(() => {
-    setRewards(backset);
+    getbackedProjects();
   }, []);
-  useEffect(() => {
-    if (rewards.length === 0) {
-      setData(true);
-    } else {
-      setData(false);
-    }
-  }, [rewards, data]);
+
   return loader ? (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator size="large" color="#F23B25" />
@@ -251,7 +263,7 @@ function BackedScrenn({ navigation }) {
         {backedscreen_text2}
       </Text>
 
-      {Platform.OS === "ios" ? (
+      {/* {Platform.OS === "ios" ? (
         <View>
           <Button
             title="View Backed Projects"
@@ -267,7 +279,7 @@ function BackedScrenn({ navigation }) {
             onPress={() => setRewards(backset)}
           ></Button>
         </View>
-      )}
+      )} */}
     </View>
   ) : (
     <View>
@@ -277,14 +289,12 @@ function BackedScrenn({ navigation }) {
         renderItem={({ item }) => {
           return <BackedProjects item={item} />;
         }}
-        keyExtractor={(item, index) => {
-          return item.C_ID;
-        }}
-        // onRefresh={fetch_reward}
-        // refreshing={loader}
+        keyExtractor={(item) => item.campaign_id}
+        onRefresh={getbackedProjects}
+        refreshing={loader}
       />
       <View style={{ marginTop: "3%" }}></View>
-      {Platform.OS === "ios" ? (
+      {/* {Platform.OS === "ios" ? (
         <View>
           <Button
             title="Search Campaigns"
@@ -300,26 +310,38 @@ function BackedScrenn({ navigation }) {
             onPress={() => setRewards([])}
           ></Button>
         </View>
-      )}
+      )} */}
     </View>
   );
 }
 function RewardScreen() {
-  const [data, setData] = useState(true);
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
+  const myContext = useContext(AppContext);
   const backedscreen_text1 = "No Rewards Available";
   const [rewards, setRewards] = useState([]);
-  //const RewardScreenData = "This is rewards screen";
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
+
+  const getRewards = async () => {
+    await axios
+      .get(`http://${URL.abc}/rewards/getrewards?token=${token}`, {
+        headers: {
+          investor_id: myContext.investor_id,
+        },
+      })
+      .then(function (response) {
+        setRewards(response.data);
+        setLoader(false);
+      })
+      .catch((error) => {
+        Alert.alert(error);
+      });
+  };
+
   useEffect(() => {
-    setRewards(rewardset);
+    getRewards(rewardset);
   }, []);
-  useEffect(() => {
-    if (rewards.length === 0) {
-      setData(true);
-    } else {
-      setData(false);
-    }
-  }, [rewards, data]);
+
   return loader ? (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator size="large" color="#F23B25" />
@@ -339,79 +361,13 @@ function RewardScreen() {
         keyExtractor={(item, index) => {
           return index;
         }}
-        // onRefresh={fetch_reward}
-        // refreshing={loader}
+        onRefresh={getRewards}
+        refreshing={loader}
       />
     </View>
   );
 }
-const backset = [
-  {
-    title: "my project",
-    disc: "This is project discription",
-    funded: Math.ceil((sum1 / goal1) * 100),
-    backed: 8,
-    hours: "2022-12-25",
-    data: require("../assets/project.jpeg"),
-    C_ID: 1,
-    name: "Mustafain Raza",
-    goal: goal1,
-    sum: Math.ceil(sum1),
-    campaign_type: "equity",
-  },
-  {
-    title: "Cameron",
-    disc: "This Cameron is basically a Bike Helmet and this is very important for bike riding",
-    funded: Math.ceil((sum2 / goal2) * 100),
-    backed: 10,
-    hours: "2022-12-28",
-    data: require("../assets/download.jpeg"),
-    C_ID: 2,
-    name: "Murtaza",
-    goal: goal2,
-    sum: Math.ceil(sum2),
-    campaign_type: "profit",
-  },
-  {
-    title: "Our FYP",
-    disc: "This is Our Final Year Project which needs to be funded so that we can work in the future",
-    funded: Math.ceil((sum3 / goal3) * 100),
-    backed: 20,
-    hours: "2022-11-30",
-    data: require("../assets/FYP.jpeg"),
-    C_ID: 3,
-    name: "Basit",
-    goal: goal3,
-    sum: Math.ceil(sum3),
-    campaign_type: "donation",
-  },
-  {
-    title: "Demo FYP",
-    disc: "This is Our Final Year Project which needs to be funded so that we can work in the future",
-    funded: Math.ceil((sum3 / goal3) * 100),
-    backed: 20,
-    hours: "2022-12-25",
-    data: require("../assets/FYP.jpeg"),
-    C_ID: 4,
-    name: "Basit",
-    goal: goal3,
-    sum: Math.ceil(sum3),
-    campaign_type: "reward",
-  },
-  {
-    title: "Demo FYP",
-    disc: "This is Our Final Year Project which needs to be funded so that we can work in the future",
-    funded: Math.ceil((sum3 / goal3) * 100),
-    backed: 20,
-    hours: "2022-12-25",
-    data: require("../assets/FYP.jpeg"),
-    C_ID: 5,
-    name: "Basit",
-    goal: goal3,
-    sum: Math.ceil(sum3),
-    campaign_type: "reward",
-  },
-];
+
 const rewardset = [
   {
     C_NAME: "Camapign 1",

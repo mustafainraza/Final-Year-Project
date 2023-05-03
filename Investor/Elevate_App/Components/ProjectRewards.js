@@ -5,20 +5,23 @@ const ProjectRewards = (props) => {
   return (
     <View style={styles.card}>
       <View style={{ padding: 5 }}>
-        <Text style={{ fontWeight: "600", fontSize: 16, color: "white" }}>
-          Project Title: {props.item.C_NAME}
+        <Text style={{ fontWeight: "600", fontSize: 16, color: "#F23B25" }}>
+          Project Title: {props.item.campaign_title}
         </Text>
         <View style={{ marginTop: "1%" }}></View>
         <Text style={{ fontWeight: "600", fontSize: 13, color: "white" }}>
-          Reward Title: {props.item.ITEM_NAME}
+          Reward Title: {props.item.campaign_reward_name}
         </Text>
         <View style={{ marginTop: "1%" }}></View>
-        <Text style={{ color: "white" }} numberOfLines={2}>
-          {props.item.ITEM_DESCRIPTION}
+        <Text
+          style={{ fontWeight: "600", fontSize: 13, color: "white" }}
+          numberOfLines={2}
+        >
+          {props.item.campaign_reward_description}
         </Text>
-        <Text style={{ color: "#F23B25", marginTop: 5, color: "#D6252E" }}>
-          Quantity:{" "}
-          <Text style={{ color: "white" }}>{props.item.quantity}</Text>
+        <View style={{ marginTop: "1%" }}></View>
+        <Text style={{ fontWeight: "600", fontSize: 13, color: "white" }}>
+          Reward Amount: {props.item.campaign_reward_amount} Rs
         </Text>
       </View>
     </View>

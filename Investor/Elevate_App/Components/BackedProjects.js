@@ -5,59 +5,44 @@ import { useNavigation } from "@react-navigation/native";
 const BackedProjects = (props) => {
   const navigation = useNavigation();
 
-  const DaysLeft = (props) => {
-    let xd = Date.parse(props);
-    let z = new Date();
-    let x = (xd - z) / (1000 * 60 * 60);
-
-    if (x <= 0) {
-      return 0;
-    } else {
-      return Math.floor(x);
-    }
-  };
-
-  // const daysLeft = (props) => {
-  //   let xd = Date.parse(props.item.C_END_DATETIME);
-  //   let z = new Date();
-  //   let x = (xd - z) / (1000 * 60 * 60);
-
-  //   if (x <= 0) {
-  //     return 0;
-  //   } else {
-  //     return Math.floor(x);
-  //   }
-  // };
-
   return (
     <Pressable
       style={styles.card}
       onPress={() => {
         navigation.navigate("Details", {
-          title: props.item.title,
-          data: props.item.data,
-          disc: props.item.disc,
-          funded: props.item.funded,
-          backed: props.item.backed,
-          hours: props.item.hours,
-          Name: props.item.name,
-          C_ID: props.item.C_ID,
-          total: props.item.sum,
-          GOAL: props.item.goal,
+          title: props.item.campaign_title,
+          data: props.item.campaign_image,
+          disc: props.item.campaign_description,
+          funded: Math.ceil(
+            (props.item.campaign_earning / props.item.campaign_goal) * 100
+          ),
+          C_ID: props.item.campaigner_id,
+          GOAL: props.item.campaign_goal,
           campaign_type: props.item.campaign_type,
+          hours: props.item.hours,
+          backed: props.item.backers,
+          Name: props.item.campaigner_name,
+          total: props.item.campaign_earning,
+          campaign_id: props.item.campaign_id,
+          isbacked: true,
         });
       }}
     >
-      <View style={{ flex: 1 }}>
-        <Image style={styles.tinyLogo} source={props.item.data} />
+      <View style={{ height: "100%", width: "30%" }}>
+        <Image
+          style={styles.tinyLogo}
+          source={{
+            uri: "data:image/jpeg;base64," + props.item.campaign_image,
+          }}
+        />
       </View>
-      <View style={{ flex: 2.1, paddingHorizontal: 5, paddingTop: 5 }}>
+      <View style={{ height: "100%", paddingHorizontal: 5, paddingTop: 5 }}>
         <Text style={{ fontWeight: "600", fontSize: 16, color: "white" }}>
-          {props.item.title}
+          {props.item.campaign_title}
         </Text>
         <View style={{ marginTop: "1%" }}></View>
         <Text style={{ color: "white" }} numberOfLines={2}>
-          {props.item.disc}
+          {props.item.campaign_description}
         </Text>
         <Text
           style={{
@@ -68,11 +53,13 @@ const BackedProjects = (props) => {
           }}
         >
           Amount Invested:{" "}
-          <Text style={{ color: "white" }}>{props.item.sum + " Rs"}</Text>
+          <Text style={{ color: "white" }}>
+            {props.item.backedamount + " Rs"}
+          </Text>
         </Text>
         <Text style={{ color: "#F23B25", fontWeight: "500", color: "#D6252E" }}>
           Status:{" "}
-          {DaysLeft(props.item.hours) <= 0 ? (
+          {props.item.hours <= 0 ? (
             <Text style={{ color: "white" }}>Closed </Text>
           ) : (
             <Text style={{ color: "white" }}>Active</Text>
@@ -97,9 +84,10 @@ const styles = StyleSheet.create({
     borderRadius: Platform.OS === "ios" ? "8%" : 8,
     padding: 10,
     flexDirection: "row",
+    flex: 1,
   },
   tinyLogo: {
-    width: 100,
-    height: 80,
+    width: "100%",
+    height: "100%",
   },
 });

@@ -84,32 +84,6 @@ export default function Details({ navigation, route }) {
       });
   };
 
-  // const sett = async () => {
-  //   let isUnmounted = false;
-  //   await axios
-  //     .get(
-  //       `https://crowd-funding-api.herokuapp.com/projects/getbackers/${props.C_ID}`
-  //     )
-  //     .then(function (response) {
-  //       if (!isUnmounted) {
-  //         let temp = [];
-  //         for (var i = 0; i < response.data.length; i++) {
-  //           temp.push(response.data[i]);
-  //         }
-  //         setData(temp);
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  //   return () => {
-  //     isUnmounted = true;
-  //   };
-  // };
-  // useEffect(() => {
-  //   sett();
-  // }, []);
-
   useEffect(() => {
     setData(Set);
     getcampaignerdetails();
@@ -153,8 +127,10 @@ export default function Details({ navigation, route }) {
             data={props.data}
             C_ID={props.C_ID}
             campaign_type={props.campaign_type}
+            campaign_id={props.campaign_id}
             isLiked={props.isLiked}
             A={props.A}
+            isbacked={props.isbacked}
           />
         </View>
 

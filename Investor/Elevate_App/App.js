@@ -81,6 +81,7 @@ function AuthenticatedStack() {
     setpassword,
     investor_id,
     setInvestor_id,
+    
   };
   const integratee = async () => {
     await axios
