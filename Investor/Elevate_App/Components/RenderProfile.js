@@ -3,7 +3,6 @@ import React from "react";
 import { color } from "react-native-reanimated";
 
 export default function RenderProfile(props) {
-  //   console.log(props.data);
   return (
     <View
       style={{

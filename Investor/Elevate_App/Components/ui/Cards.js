@@ -18,42 +18,7 @@ const Card = (props) => {
   let prog = Math.ceil(props.prog * 100);
   let progColor = props.prog > 0 ? props.prog : 0;
   prog = prog > 0 ? Math.ceil(props.prog * 100) : 0;
-  // console.log(Math.ceil(props.prog * 100));
-  // const [progress, setProgress] = useState(props.prog);
   const [modalIsVisible, SetModal] = useState(false);
-  // const [check, setCheck] = useState(props.prog);
-
-  // const update_progress = async () => {
-  //   await axios
-  //     .patch(`https://crowd-funding-api.herokuapp.com/projects/setprogress`, {
-  //       uid: props.update_id,
-  //       progress: check,
-  //       token: token,
-  //     })
-  //     .then(function (response) {
-  //       setProgress(parseFloat(check));
-  //       Alert.alert(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response.data);
-  //     });
-  // };
-
-  // const setProgressHandler = () => {
-  //   SetModal(!modalIsVisible);
-  // };
-  // const submit = () => {
-  //   if (parseFloat(check) > progress) {
-  //     if (parseFloat(check) <= 1) {
-  //       update_progress();
-  //       SetModal(!modalIsVisible);
-  //     } else {
-  //       Alert.alert("The  Value should be less than 1");
-  //     }
-  //   } else {
-  //     Alert.alert("The Updated Value should be Greater than Current Value");
-  //   }
-  // };
   return (
     <Pressable style={styles.container}>
       <View style={progColor >= 1 ? styles.box : styles.box1}>
@@ -127,8 +92,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 20,
     height: 120,
-    //   marginBottom: "2%",
-    //  backgroundColor: "red",
   },
   box: {
     width: 100,

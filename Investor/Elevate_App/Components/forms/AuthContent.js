@@ -28,8 +28,6 @@ const AuthContent = ({ isLogin, onAuthenticate }) => {
 
   function switchAuthModeHandler() {
     if (isLogin) {
-      //The difference between navigate and replace is that navigate
-      //give us a back button and replace doesn't
       navigation.replace("Signup");
     } else {
       navigation.replace("Login");

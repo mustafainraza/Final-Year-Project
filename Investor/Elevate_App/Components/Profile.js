@@ -186,10 +186,6 @@ const Profile = ({ navigation }) => {
           ></Tab.Screen>
 
           <Tab.Screen name=" Rewards" component={RewardScreen}></Tab.Screen>
-          {/* <Tab.Screen
-            name="Profile Details"
-            component={ProfileScreen}
-          ></Tab.Screen> */}
         </Tab.Navigator>
       </View>
     </SafeAreaView>
@@ -262,24 +258,6 @@ function BackedScrenn({ navigation }) {
       >
         {backedscreen_text2}
       </Text>
-
-      {/* {Platform.OS === "ios" ? (
-        <View>
-          <Button
-            title="View Backed Projects"
-            color={"#D6252E"}
-            onPress={() => setRewards(backset)}
-          ></Button>
-        </View>
-      ) : (
-        <View style={{ width: "50%", alignSelf: "center", marginTop: "3%" }}>
-          <Button
-            title="View Backed Projects"
-            color={"#D6252E"}
-            onPress={() => setRewards(backset)}
-          ></Button>
-        </View>
-      )} */}
     </View>
   ) : (
     <View>
@@ -294,23 +272,6 @@ function BackedScrenn({ navigation }) {
         refreshing={loader}
       />
       <View style={{ marginTop: "3%" }}></View>
-      {/* {Platform.OS === "ios" ? (
-        <View>
-          <Button
-            title="Search Campaigns"
-            color={"#D6252E"}
-            onPress={() => setRewards([])}
-          ></Button>
-        </View>
-      ) : (
-        <View style={{ width: "50%", alignSelf: "center", marginTop: "3%" }}>
-          <Button
-            title="Search Campaigns"
-            color={"#D6252E"}
-            onPress={() => setRewards([])}
-          ></Button>
-        </View>
-      )} */}
     </View>
   );
 }

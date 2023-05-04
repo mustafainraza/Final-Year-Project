@@ -10,8 +10,6 @@ export default function TrackUpdates({ route }) {
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
   const { campaign_id } = route.params;
-  // const check = route.params.check_mycamp ? route.params.check_mycamp : false;
-  // console.log(check);
   const animation = useRef(null);
   const [data, setData] = useState([]);
   const getdata = async () => {
@@ -23,7 +21,6 @@ export default function TrackUpdates({ route }) {
       })
       .then(function (response) {
         setData(response.data);
-        // console.log(response.data);
       })
       .catch((error) => {
         Alert.alert(error);
@@ -32,13 +29,8 @@ export default function TrackUpdates({ route }) {
 
   useEffect(() => {
     animation.current?.play();
-    // setData(d);
     getdata();
   }, [d]);
-
-  // useEffect(() => {
-  //   // console.log("Hello");
-  // }, [data]);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
@@ -96,8 +88,6 @@ export default function TrackUpdates({ route }) {
                   prog={item.awai}
                   title={item.milestone_title}
                   by={item.milestone_desc}
-                  // update_id={item.update_id}
-                  // my_camp={route.params.check_mycamp}
                 />
               </View>
             );
@@ -107,34 +97,3 @@ export default function TrackUpdates({ route }) {
     </View>
   );
 }
-
-const d = [
-  {
-    id: 1,
-    month: 1,
-    prog: 0.25,
-    title: "First Quater",
-    by: "This is first milestone discription",
-  },
-  {
-    id: 4,
-    month: 2,
-    prog: 0.5,
-    title: "Second Quater",
-    by: "This is second milestone discription",
-  },
-  {
-    id: 23,
-    month: 3,
-    prog: 0.75,
-    title: "Third Quater",
-    by: "This is third milestone discription",
-  },
-  {
-    id: 1,
-    month: 4,
-    prog: 1,
-    title: "Fourth Quater",
-    by: "This is fourth milestone discription",
-  },
-];

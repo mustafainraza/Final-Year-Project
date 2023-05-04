@@ -18,13 +18,17 @@ import Drawer_Nav from "./Components/Drawer_Nav";
 import Details from "./Components/Details";
 import TrackUpdates from "./Components/TrackUpdates";
 import Rewards from "./Components/Reward.js";
-import Newscreen from "./Components/Newscreen";
 import AppContext from "./Components/forms/AppContext";
 import axios from "axios";
 import URL from "./config/env";
+import Search_Screen from "./screens/Search_Screen";
+import Comments from "./Components/Comments";
 
 import Profitbased_Investment from "./Components/Profitbased_Investment";
 import Donationbased_Investment from "./Components/Donationbased_Investment";
+
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["new NativeEventEmitter"]);
 
 const Stack = createNativeStackNavigator();
 
@@ -81,7 +85,6 @@ function AuthenticatedStack() {
     setpassword,
     investor_id,
     setInvestor_id,
-    
   };
   const integratee = async () => {
     await axios
@@ -92,7 +95,6 @@ function AuthenticatedStack() {
       })
       .then(function (response) {
         let tempp = response.data[0];
-        // console.log(tempp.first_name);
         setname(tempp.investor_name);
         setEmail(tempp.investor_email);
         setcontactno(tempp.investor_contact);
@@ -101,7 +103,6 @@ function AuthenticatedStack() {
         setpassword(tempp.investor_password);
         setInvestor_id(tempp.investor_id);
         SetIs_data(true);
-        // console.log(tempp.C_IMAGE);
       })
       .catch(function (error) {
         console.log(error.message);
@@ -109,7 +110,6 @@ function AuthenticatedStack() {
   };
   useEffect(() => {
     integratee();
-    // console.log(temp[0]);
   }, [email]);
 
   return (
@@ -121,6 +121,17 @@ function AuthenticatedStack() {
         }}
       >
         <Stack.Screen name="Drawer_Nav" component={Drawer_Nav} />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            contentStyle: { backgroundColor: "#ffffff" },
+            headerStyle: { backgroundColor: "#ffffff" },
+          }}
+          name="Search"
+          component={Search_Screen}
+        ></Stack.Screen>
         <Stack.Screen
           name="Details"
           component={Details}
@@ -172,7 +183,7 @@ function AuthenticatedStack() {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerShadowVisible: false, // applied here
+            headerShadowVisible: false,
             headerBackTitleVisible: false,
             contentStyle: { backgroundColor: "#ffffff" },
             headerStyle: { backgroundColor: "#ffffff" },
@@ -183,13 +194,24 @@ function AuthenticatedStack() {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerShadowVisible: false, // applied here
+            headerShadowVisible: false,
             headerBackTitleVisible: false,
             contentStyle: { backgroundColor: "#ffffff" },
             headerStyle: { backgroundColor: "#ffffff" },
           }}
           name="Donationbased Investment"
           component={Donationbased_Investment}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            contentStyle: { backgroundColor: "#ffffff" },
+            headerStyle: { backgroundColor: "#ffffff" },
+          }}
+          name="Comments"
+          component={Comments}
         ></Stack.Screen>
       </Stack.Navigator>
     </AppContext.Provider>

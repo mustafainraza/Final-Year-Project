@@ -1,8 +1,14 @@
 import react, { useState, useEffect, useContext } from "react";
-import { Keyboard } from "react-native";
+import { Keyboard, Alert } from "react-native";
 import { View, Text, Button, TextInput } from "react-native";
 import { Platform } from "react-native";
+import axios from "axios";
+import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
+import { AuthContext } from "../store/auth-context";
 function Donationbased_Investment() {
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
+  const stripe = useStripe();
   const [amount, setamount] = useState("");
   const [text, settext] = useState(true);
   const [errprompt, seterrprompt] = useState({});
@@ -14,21 +20,56 @@ function Donationbased_Investment() {
     }
     return errors;
   }
-  const save = () => {
-    settext(true);
-    seterrprompt(checkcredentials(amount));
-    Keyboard.dismiss();
-    alert("Your donated amount is: " + amount);
-    // if (
-    //   Object.keys(checkcredentials(amount))
-    //     .length === 0
-    // ) {
-    //   edit();
-    // }
+  const pay = async () => {
+    try {
+      if (amount < 1) return Alert.alert("You cannot donate below 1 Rupees");
+      //sending request
+      const response = await fetch(
+        `http://192.168.100.78:3080/payment/pay?token=${token}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ amount: amount, name: "Ali" }),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) return Alert.alert(data.message);
+      const clientSecret = data.clientSecret;
+      const initSheet = await stripe.initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: "Merchant Name",
+      });
+      if (initSheet.error) return Alert.alert(initSheet.error.message);
+      const presentSheet = await stripe.presentPaymentSheet({
+        clientSecret: clientSecret,
+      });
+      if (presentSheet.error) return Alert.alert(presentSheet.error.message);
+      await axios
+        .post(
+          `http://192.168.100.78:3080/Campaign/donation_investment?token=${token}`,
+          {
+            donation_amount: amount,
+            cid: 2,
+            investor_id: 1,
+          }
+        )
+        .then(function (response) {
+          console.log(response.data);
+          Alert.alert("Payment Complete,thankyou");
+        })
+        .catch(function (error) {
+          console.log(error.msg);
+        });
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Something went wrong,try again later");
+    }
   };
 
   return (
-    <View>
+    <StripeProvider publishableKey="pk_test_51MyMrzEBgz1Gk70hQ56CokGaRKkUYDWhV16OJlzsIYKxfdPgzEZBQ7FnQlClbQmRecpMBPXCR06bKjif93OfyyPd00cwV5DZYt">
       <Text
         style={{
           marginTop: "3%",
@@ -74,14 +115,14 @@ function Donationbased_Investment() {
       </View>
       {Platform.OS === "ios" ? (
         <View style={{ marginTop: "7%" }}>
-          <Button title="Submit" color={"#D6252E"} onPress={save}></Button>
+          <Button title="Submit" color={"#D6252E"} onPress={pay}></Button>
         </View>
       ) : (
         <View style={{ width: "20%", alignSelf: "center" }}>
-          <Button title="Submit" color={"#D6252E"} onPress={save}></Button>
+          <Button title="Submit" color={"#D6252E"} onPress={pay}></Button>
         </View>
       )}
-    </View>
+    </StripeProvider>
   );
 }
 export default Donationbased_Investment;

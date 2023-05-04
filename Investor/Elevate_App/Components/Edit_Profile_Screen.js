@@ -55,7 +55,7 @@ function Edit_Profile_Screen({ navigation }) {
     setcnic(myContext.cnic);
     setEmail(myContext.email);
   }, []);
-  useEffect(() => { }, [errprompt]);
+  useEffect(() => {}, [errprompt]);
 
   const showImagePicker = async () => {
     myContext.setimageset(true);
@@ -99,8 +99,6 @@ function Edit_Profile_Screen({ navigation }) {
     if (Object.keys(checkcredentials(name, contactno)).length === 0) {
       edit();
     }
-
-    // settext(true);
   };
   const [show, setshow] = useState(false);
   return (
@@ -123,12 +121,12 @@ function Edit_Profile_Screen({ navigation }) {
             )
           ) : (
             (myContext.setPickedImagePath("data:image/jpg;base64,null"),
-              (
-                <Avatar.Image
-                  size={100}
-                  source={require("../assets/Userr.png")}
-                />
-              ))
+            (
+              <Avatar.Image
+                size={100}
+                source={require("../assets/Userr.png")}
+              />
+            ))
           )}
           <Button
             title="Change Profile Photo"
@@ -163,12 +161,12 @@ function Edit_Profile_Screen({ navigation }) {
             )
           ) : (
             (myContext.setPickedImagePath("data:image/jpg;base64,null"),
-              (
-                <Avatar.Image
-                  size={100}
-                  source={require("../assets/Userr.png")}
-                />
-              ))
+            (
+              <Avatar.Image
+                size={100}
+                source={require("../assets/Userr.png")}
+              />
+            ))
           )}
           <View style={{ marginBottom: "2%" }}></View>
           <Button
@@ -184,7 +182,6 @@ function Edit_Profile_Screen({ navigation }) {
             color={"#D6252E"}
             onPress={() => {
               navigation.navigate("Change Password");
-              //console.log("hELLO");
             }}
           />
         </View>

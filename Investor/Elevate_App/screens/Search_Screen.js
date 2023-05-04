@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,8 +7,12 @@ import {
   TextInput,
   Image,
   FlatList,
+  Pressable,
 } from "react-native";
-const Search_Screen = () => {
+import { AuthContext } from "../store/auth-context";
+const Search_Screen = ({ navigation }) => {
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
   const [filteredData, setfilteredData] = useState([]);
   const [masterData, setmasterData] = useState([]);
   const [search, setsearch] = useState("");
@@ -17,7 +21,7 @@ const Search_Screen = () => {
     return () => {};
   }, []);
   const fetchPosts = () => {
-    const apiURL = "https://jsonplaceholder.typicode.com/posts";
+    const apiURL = `http://192.168.100.78:3080/Campaign/projectdetails?token=${token}`;
     fetch(apiURL)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -31,8 +35,8 @@ const Search_Screen = () => {
   const searchFilter = (text) => {
     if (text) {
       const newData = masterData.filter((item) => {
-        const itemData = item.title
-          ? item.title.toUpperCase()
+        const itemData = item.campaign_title
+          ? item.campaign_title.toUpperCase()
           : "".toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
@@ -46,11 +50,48 @@ const Search_Screen = () => {
   };
   const ItemView = ({ item }) => {
     return (
-      <Text style={styles.itemStyle}>
-        {item.id}
-        {". "}
-        {item.title.toUpperCase()}
-      </Text>
+      <Pressable
+        style={{ backgroundColor: "#003047" }}
+        android_ripple={{ borderless: false, color: "lightgrey" }}
+        onPress={() => {
+          // navigation.navigate("Details", {
+          //   title: item.C_NAME,
+          //   data: "data:image/jpeg;base64," + item.C_IMAGE,
+          //   disc: item.C_DESCRIPTION,
+          //   funded: Math.ceil((item.sum / item.C_GOAL) * 100),
+          //   backed: item.count,
+          //   hours: <DaysLeft data={item.C_END_DATETIME} />,
+          //   Name: item.first_name + " " + item.last_name,
+          //   C_ID: item.C_ID,
+          //   total: Math.floor(item.sum),
+          //   GOAL: item.C_GOAL
+          // });
+          alert("Hello");
+        }}
+      >
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <View
+            style={{ justifyContent: "center", marginLeft: "2%", width: "30%" }}
+          >
+            <Image
+              style={{
+                height: "80%",
+                width: "100%",
+              }}
+              source={{ uri: "data:image/jpeg;base64," + item.campaign_image }}
+            />
+          </View>
+          <View>
+            <Text style={styles.itemStyle}>
+              {"Product Name : " + item.campaign_title.toUpperCase() + "\n\n"}
+              {"Description : "}
+              {item.campaign_description.length < 70
+                ? item.campaign_description
+                : item.campaign_description.slice(0, 75) + "..."}
+            </Text>
+          </View>
+        </View>
+      </Pressable>
     );
   };
   const ItemSeparatorView = () => {
@@ -59,6 +100,9 @@ const Search_Screen = () => {
         style={{ height: 0.5, width: "100%", backgroundColor: "#c8c8c8" }}
       />
     );
+  };
+  const ListFooter = () => {
+    return <View style={styles.headerFooterStyle}></View>;
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -81,6 +125,8 @@ const Search_Screen = () => {
           keyExtractor={(Item, index) => index.toString()}
           ItemSeparatorComponent={ItemSeparatorView}
           renderItem={ItemView}
+          maxToRenderPerBatch={5}
+          ListFooterComponent={ListFooter}
         />
       </View>
     </SafeAreaView>
@@ -91,7 +137,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   itemStyle: {
-    padding: 15,
+    padding: 30,
+    color: "white",
   },
   textInputStyle: {
     height: 50,
@@ -101,6 +148,10 @@ const styles = StyleSheet.create({
     borderColor: "#009688",
     backgroundColor: "white",
     flex: 1,
+  },
+  headerFooterStyle: {
+    width: "100%",
+    height: 45,
   },
   sectionStyle: {
     flexDirection: "row",

@@ -55,4 +55,7 @@ app.use("/projects", backed_projects);
 const getrewards = require("./router/Rewards.js");
 app.use("/rewards", getrewards);
 
+const payment = require("./router/payment.js");
+app.use("/payment", payment);
+
 module.exports = app;

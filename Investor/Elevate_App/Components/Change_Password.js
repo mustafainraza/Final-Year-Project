@@ -4,8 +4,7 @@ import AppContext from "./forms/AppContext";
 import axios from "axios";
 import { Platform } from "react-native";
 import { AuthContext } from "../store/auth-context";
-import URL from '.././config/env'
-
+import URL from ".././config/env";
 
 function Change_Password() {
   const authCtx = useContext(AuthContext);
@@ -18,7 +17,6 @@ function Change_Password() {
         token: token,
       })
       .then(function (response) {
-        //console.log(new Date().toString());
         alert(response.data);
       })
       .catch(function (error) {
@@ -30,7 +28,7 @@ function Change_Password() {
         });
       });
   };
-  useEffect(() => { }, [errprompt]);
+  useEffect(() => {}, [errprompt]);
   const [newpassword, setnewpassword] = useState("");
   const [currpassword, setcurrpassword] = useState("");
   const [conpass, setconpass] = useState("");

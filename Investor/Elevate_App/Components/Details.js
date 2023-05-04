@@ -29,17 +29,6 @@ export default function Details({ navigation, route }) {
   const [hours, sethours] = useState(props.hours);
   const [backerdetails, setbackerdetails] = useState([]);
 
-  // useEffect(() => {
-  //   let xd = Date.parse(props.hours);
-  //   let z = new Date();
-  //   let x = (xd - z) / (1000 * 60 * 60);
-  //   if (x <= 0) {
-  //     sethours(0);
-  //   } else {
-  //     sethours(Math.floor(x));
-  //   }
-  // }, [hours]);
-
   const track_update = false;
 
   const getcampaignerdetails = async () => {
@@ -165,7 +154,6 @@ export default function Details({ navigation, route }) {
             <Pressable
               onPress={() => {
                 setModalVisible2(true);
-                // getcampaignerdetails();
               }}
             >
               <Text
@@ -229,28 +217,11 @@ export default function Details({ navigation, route }) {
                         borderTopWidth: 1,
                       }}
                     />
-                    {/* <FlatList
-                      data={set}
-                      renderItem={renderItem}
-                    // keyExtractor={item => item.C_ID}
-                    /> */}
                     {<RenderProfile data={campaignerdetails} />}
                   </View>
                 </Modal>
               </View>
             </Pressable>
-            {/* <Text
-              style={{
-                fontWeight: "500",
-                fontSize: 18,
-                color: "white",
-                fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
-                fontStyle: "italic",
-                textDecorationLine: "underline",
-              }}
-            >
-              {props.Name}
-            </Text> */}
           </View>
           <Pressable
             onPress={() => {
@@ -328,11 +299,7 @@ export default function Details({ navigation, route }) {
                       borderTopWidth: 1,
                     }}
                   />
-                  <FlatList
-                    data={backerdetails}
-                    renderItem={renderItem}
-                    // keyExtractor={item => item.C_ID}
-                  />
+                  <FlatList data={backerdetails} renderItem={renderItem} />
                 </View>
               </Modal>
             </View>
@@ -354,10 +321,7 @@ export default function Details({ navigation, route }) {
           });
         }}
       >
-        <LinearGradient
-          // Button Linear Gradient
-          colors={["#D6252E", "#003047"]}
-        >
+        <LinearGradient colors={["#D6252E", "#003047"]}>
           <Text
             style={{
               fontSize: 22,
@@ -382,27 +346,17 @@ export default function Details({ navigation, route }) {
           height: "11%",
         }}
         onPress={() => {
-          console.warn("comments");
-          // navigation.navigate("Commentss", props.C_ID);
+          navigation.navigate("Comments");
         }}
       >
-        <LinearGradient
-          // Button Linear Gradient
-          colors={["#D6252E", "#003047"]}
-        >
+        <LinearGradient colors={["#D6252E", "#003047"]}>
           <Text
             style={{
               fontSize: 22,
               color: "white",
               fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
-              // position: "absolute",
-              // paddingTop: "19%"
               width: "100%",
               height: "100%",
-              // justifyContent: "center",
-              // alignItems: "center",
-              // alignSelf: "center",
-              // alignContent: "center",
               paddingLeft: "35%",
               paddingTop: "5%",
             }}
@@ -486,7 +440,6 @@ const styles = StyleSheet.create({
   centeredView: {
     justifyContent: "center",
     alignItems: "center",
-    // marginTop: '50%',
     backgroundColor: "#000000aa",
     flex: 1,
   },
@@ -496,7 +449,6 @@ const styles = StyleSheet.create({
     height: "50%",
     borderRadius: 20,
     padding: 20,
-    // alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.25,
     shadowRadius: 4,

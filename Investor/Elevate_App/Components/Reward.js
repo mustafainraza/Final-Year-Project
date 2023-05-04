@@ -9,24 +9,6 @@ export default function Rewards({ route }) {
   const C_ID = route.params.C_ID;
   const campaign_type = route.params.campaign_type;
 
-  // const Reward_API = async () => {
-  //   await axios
-  //     .get(
-  //       `https://crowd-funding-api.herokuapp.com/projects/getrewards/${C_ID}`
-  //     )
-  //     .then(function (response) {
-  //       let temp = [];
-  //       for (var i = 0; i < response.data.length; i++) {
-  //         temp.push(response.data[i]);
-  //       }
-  //       setRewards_data(temp);
-  //       setIsdata_loaded(true);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
-
   useEffect(() => {
     campaign_type == "reward" ? setRewards_data(Set) : setRewards_data(Set2);
     setIsdata_loaded(true);
@@ -40,7 +22,6 @@ export default function Rewards({ route }) {
         price={item.price}
         reward_id={item.reward_id}
         C_ID={C_ID}
-        // check={route.params.check}
       />
     ) : (
       <Equity_Card
@@ -49,7 +30,6 @@ export default function Rewards({ route }) {
         Total_price={item.Total_price}
         equity_id={item.equity_id}
         C_ID={C_ID}
-        // check={route.params.check}
       />
     );
   return (
