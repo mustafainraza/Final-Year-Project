@@ -1,35 +1,73 @@
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RewardCard from "./RewardCard";
 import Equity_Card from "./Equity_Card";
+import axios from "axios";
+import URL from "../config/env";
+import AppContext from "./forms/AppContext";
 
 export default function Rewards({ route }) {
-  const [Rewards_data, setRewards_data] = useState(null);
+  const { campaign_id } = route.params;
+  const myContext = useContext(AppContext);
+  const [Rewards_data, setRewards_data] = useState([]);
   const [Isdata_loaded, setIsdata_loaded] = useState(false);
   const C_ID = route.params.C_ID;
   const campaign_type = route.params.campaign_type;
 
+  const getrewardDetails = async () => {
+    await axios
+      .get(`http://${URL.abc}/Campaign/reward_details`, {
+        headers: {
+          campaign_id: campaign_id,
+        },
+      })
+      .then(function (response) {
+        setRewards_data(response.data);
+        setIsdata_loaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getequityDetails = async () => {
+    await axios
+      .get(`http://${URL.abc}/Campaign/equity_details`, {
+        headers: {
+          campaign_id: campaign_id,
+        },
+      })
+      .then(function (response) {
+        setRewards_data(response.data);
+        setIsdata_loaded(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    campaign_type == "reward" ? setRewards_data(Set) : setRewards_data(Set2);
-    setIsdata_loaded(true);
-  }, []);
+    campaign_type == "reward" ? getrewardDetails() : getequityDetails();
+  }, [campaign_type]);
 
   const renderItem = ({ item }) =>
     campaign_type == "reward" ? (
       <RewardCard
-        title={item.title}
-        disc={item.disc}
-        price={item.price}
-        reward_id={item.reward_id}
+        title={item.campaign_reward_name}
+        disc={item.campaign_reward_description}
+        price={item.campaign_reward_amount}
+        reward_id={item.campaign_reward_id}
         C_ID={C_ID}
+        campaign_id={campaign_id}
       />
     ) : (
       <Equity_Card
-        percentage={item.percentage}
-        disc={item.disc}
-        Total_price={item.Total_price}
-        equity_id={item.equity_id}
+        percentage={item.campaign_equity_percentage}
+        disc={item.campaign_equity_description}
+        Total_price={item.campaign_equity_amount}
+        equity_id={item.campaign_equity_id}
         C_ID={C_ID}
+        campaign_id={campaign_id}
       />
     );
   return (

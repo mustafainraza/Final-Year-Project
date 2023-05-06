@@ -4,9 +4,14 @@ import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { AuthContext } from "../store/auth-context";
+import AppContext from "./forms/AppContext";
+import URL from "../config/env";
+
 export default function RewardCard(props) {
+  const { campaign_id } = props;
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
+  const myContext = useContext(AppContext);
   const stripe = useStripe();
 
   const navigation = useNavigation();
@@ -14,7 +19,7 @@ export default function RewardCard(props) {
     try {
       if (props.price < 1) return Alert.alert("You cannot donate below 1 INR");
       const response = await fetch(
-        `http://192.168.33.213:3080/payment/pay?token=${token}`,
+        `http://${URL.abc}/payment/pay?token=${token}`,
         {
           method: "POST",
           headers: {
@@ -36,14 +41,11 @@ export default function RewardCard(props) {
       });
       if (presentSheet.error) return Alert.alert(presentSheet.error.message);
       await axios
-        .post(
-          `http://192.168.33.213:3080/Campaign/reward_investment?token=${token}`,
-          {
-            investor_id: 1,
-            C_reward_id: 3,
-            cid: 4,
-          }
-        )
+        .post(`http://${URL.abc}/Campaign/reward_investment?token=${token}`, {
+          investor_id: myContext.investor_id,
+          C_reward_id: props.reward_id,
+          cid: campaign_id,
+        })
         .then(function (response) {
           console.log(response.data);
           Alert.alert("Payment Complete,thankyou");

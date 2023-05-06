@@ -26,6 +26,7 @@ export default function Details({ navigation, route }) {
   const [modalVisible2, setModalVisible2] = useState(false);
   const [campaignerdetails, setCampaignerdetails] = useState([]);
   const props = route.params;
+  const { campaign_id } = route.params;
   const [hours, sethours] = useState(props.hours);
   const [backerdetails, setbackerdetails] = useState([]);
 
@@ -346,7 +347,9 @@ export default function Details({ navigation, route }) {
           height: "11%",
         }}
         onPress={() => {
-          navigation.navigate("Comments");
+          navigation.navigate("Comments", {
+            campaign_id: props.campaign_id,
+          });
         }}
       >
         <LinearGradient colors={["#D6252E", "#003047"]}>
@@ -387,13 +390,16 @@ export default function Details({ navigation, route }) {
             ? navigation.navigate("Rewards", {
                 C_ID: props.C_ID,
                 campaign_type: props.campaign_type,
+                campaign_id: campaign_id,
               })
             : props.campaign_type == "profit"
             ? navigation.navigate("Profitbased Investment", {
                 C_ID: props.C_ID,
+                campaign_id: campaign_id,
               })
             : navigation.navigate("Donationbased Investment", {
                 C_ID: props.C_ID,
+                campaign_id: campaign_id,
               });
         }}
       >

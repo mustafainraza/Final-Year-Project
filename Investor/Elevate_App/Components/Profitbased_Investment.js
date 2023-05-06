@@ -6,9 +6,13 @@ import axios from "axios";
 import { Platform } from "react-native";
 import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
 import { AuthContext } from "../store/auth-context";
-function Profitbased_Investment() {
+import AppContext from "./forms/AppContext";
+import URL from "../config/env";
+function Profitbased_Investment({ route }) {
+  const { campaign_id } = route.params;
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
+  const myContext = useContext(AppContext);
   const stripe = useStripe();
   const [amount, setamount] = useState("");
   const [percent, setpercent] = useState();
@@ -28,7 +32,7 @@ function Profitbased_Investment() {
       if (amount < 1) return Alert.alert("You cannot donate below 1 INR");
       //sending request
       const response = await fetch(
-        `http://192.168.100.78:3080/payment/pay?token=${token}`,
+        `http://${URL.abc}/payment/pay?token=${token}`,
         {
           method: "POST",
           headers: {
@@ -50,14 +54,11 @@ function Profitbased_Investment() {
       });
       if (presentSheet.error) return Alert.alert(presentSheet.error.message);
       await axios
-        .post(
-          `http://192.168.100.78:3080/Campaign/profit_investment?token=${token}`,
-          {
-            profit_amount: amount,
-            cid: 1,
-            investor_id: 1,
-          }
-        )
+        .post(`http://${URL.abc}/Campaign/profit_investment?token=${token}`, {
+          profit_amount: amount,
+          cid: campaign_id,
+          investor_id: myContext.investor_id,
+        })
         .then(function (response) {
           console.log(response.data);
           Alert.alert("Payment Successful");
@@ -72,7 +73,7 @@ function Profitbased_Investment() {
   };
   const getpercent = async () => {
     await axios
-      .get(`http://192.168.100.78:3080/Campaign/profit/1?token=${token}`)
+      .get(`http://${URL.abc}/Campaign/profit/1?token=${token}`)
       .then(function (response) {
         let temp = response.data.campaign_profit_percentage;
         setpercent(temp);

@@ -68,7 +68,7 @@ export default function Campaign({ navigation, route }) {
         },
       })
       .then(function (response) {
-        setlikes(response.data);
+        myContext.setlikes(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -79,7 +79,7 @@ export default function Campaign({ navigation, route }) {
     await axios
       .get(`http://${URL.abc}/favourite/countlikes?token=${token}`)
       .then(function (response) {
-        setCountlikes(response.data);
+        myContext.setCountlikes(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -129,12 +129,13 @@ export default function Campaign({ navigation, route }) {
             Name: item.campaigner_name,
             total: item.campaign_earning,
             campaign_id: item.campaign_id,
-            A: countlikes.find((Item) =>
+            A: myContext.countlikes.find((Item) =>
               Item.campaign_id === item.campaign_id ? Item.all_likes : null
             ),
-            isLiked: likes.find((Item) =>
+            isLiked: myContext.likes.find((Item) =>
               Item.campaign_id === item.campaign_id ? true : false
             ),
+            isbacked: true,
           });
         }}
       >
@@ -148,10 +149,10 @@ export default function Campaign({ navigation, route }) {
           C_ID={item.campaigner_id}
           campaign_type={item.campaign_type}
           campaign_id={item.campaign_id}
-          isLiked={likes.find((Item) =>
+          isLiked={myContext.likes.find((Item) =>
             Item.campaign_id === item.campaign_id ? true : false
           )}
-          A={countlikes.find((Item) =>
+          A={myContext.countlikes.find((Item) =>
             Item.campaign_id === item.campaign_id ? Item.all_likes : null
           )}
         />

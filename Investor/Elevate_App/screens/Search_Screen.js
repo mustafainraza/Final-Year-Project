@@ -10,18 +10,60 @@ import {
   Pressable,
 } from "react-native";
 import { AuthContext } from "../store/auth-context";
+import AppContext from "../Components/forms/AppContext";
+import axios from "axios";
+import URL from "../config/env";
+
 const Search_Screen = ({ navigation }) => {
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
   const [filteredData, setfilteredData] = useState([]);
   const [masterData, setmasterData] = useState([]);
   const [search, setsearch] = useState("");
+  const [likes, setlikes] = useState([]);
+  const [countlikes, setCountlikes] = useState([]);
+  const myContext = useContext(AppContext);
+
+  const checklike = async () => {
+    await axios
+      .get(`http://${URL.abc}/favourite/showlikes?token=${token}`, {
+        headers: {
+          investor_id: myContext.investor_id,
+        },
+      })
+      .then(function (response) {
+        setlikes(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const total_likes = async () => {
+    await axios
+      .get(`http://${URL.abc}/favourite/countlikes?token=${token}`)
+      .then(function (response) {
+        setCountlikes(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     fetchPosts();
-    return () => {};
+    checklike();
+    total_likes();
   }, []);
+
+  useEffect(() => {
+    if (myContext.investor_id) {
+      checklike();
+    }
+  }, [myContext.investor_id]);
+
   const fetchPosts = () => {
-    const apiURL = `http://192.168.100.78:3080/Campaign/projectdetails?token=${token}`;
+    const apiURL = `http://${URL.abc}/Campaign/projectdetails?token=${token}`;
     fetch(apiURL)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -51,22 +93,37 @@ const Search_Screen = ({ navigation }) => {
   const ItemView = ({ item }) => {
     return (
       <Pressable
-        style={{ backgroundColor: "#003047" }}
+        style={{
+          backgroundColor: "#003047",
+          marginHorizontal: "7%",
+          marginVertical: "2%",
+          borderRadius: 25,
+        }}
         android_ripple={{ borderless: false, color: "lightgrey" }}
         onPress={() => {
-          // navigation.navigate("Details", {
-          //   title: item.C_NAME,
-          //   data: "data:image/jpeg;base64," + item.C_IMAGE,
-          //   disc: item.C_DESCRIPTION,
-          //   funded: Math.ceil((item.sum / item.C_GOAL) * 100),
-          //   backed: item.count,
-          //   hours: <DaysLeft data={item.C_END_DATETIME} />,
-          //   Name: item.first_name + " " + item.last_name,
-          //   C_ID: item.C_ID,
-          //   total: Math.floor(item.sum),
-          //   GOAL: item.C_GOAL
-          // });
-          alert("Hello");
+          navigation.navigate("Details", {
+            title: item.campaign_title,
+            data: item.campaign_image,
+            disc: item.campaign_description,
+            funded: Math.ceil(
+              (item.campaign_earning / item.campaign_goal) * 100
+            ),
+            C_ID: item.campaigner_id,
+            GOAL: item.campaign_goal,
+            campaign_type: item.campaign_type,
+            hours: item.hours,
+            backed: item.backers,
+            Name: item.campaigner_name,
+            total: item.campaign_earning,
+            campaign_id: item.campaign_id,
+            A: countlikes.find((Item) =>
+              Item.campaign_id === item.campaign_id ? Item.all_likes : null
+            ),
+            isLiked: likes.find((Item) =>
+              Item.campaign_id === item.campaign_id ? true : false
+            ),
+            isbacked: true,
+          });
         }}
       >
         <View style={{ flex: 1, flexDirection: "row" }}>
@@ -77,17 +134,21 @@ const Search_Screen = ({ navigation }) => {
               style={{
                 height: "80%",
                 width: "100%",
+                borderRadius: 20,
               }}
               source={{ uri: "data:image/jpeg;base64," + item.campaign_image }}
             />
           </View>
           <View>
             <Text style={styles.itemStyle}>
-              {"Product Name : " + item.campaign_title.toUpperCase() + "\n\n"}
+              {"Product Name : " +
+                item.campaign_title.toUpperCase().slice(0, 15) +
+                "..." +
+                "\n\n"}
               {"Description : "}
-              {item.campaign_description.length < 70
+              {item.campaign_description.length < 20
                 ? item.campaign_description
-                : item.campaign_description.slice(0, 75) + "..."}
+                : item.campaign_description.slice(0, 20) + "..."}
             </Text>
           </View>
         </View>
@@ -105,7 +166,7 @@ const Search_Screen = ({ navigation }) => {
     return <View style={styles.headerFooterStyle}></View>;
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginTop: "10%" }}>
       <View style={styles.container}>
         <View style={styles.sectionStyle}>
           <Image
@@ -137,8 +198,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   itemStyle: {
-    padding: 30,
+    padding: "10%",
     color: "white",
+    fontSize: 10,
   },
   textInputStyle: {
     height: 50,

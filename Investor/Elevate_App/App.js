@@ -62,7 +62,13 @@ function AuthenticatedStack() {
   const [password, setpassword] = useState("");
   const [val, setval] = useState("all");
   const [investor_id, setInvestor_id] = useState(0);
+  const [likes, setlikes] = useState([]);
+  const [countlikes, setCountlikes] = useState([]);
   const imagesettings = {
+    likes,
+    setlikes,
+    countlikes,
+    setCountlikes,
     val,
     setval,
     imageset,

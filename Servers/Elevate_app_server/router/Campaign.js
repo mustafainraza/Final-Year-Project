@@ -270,4 +270,31 @@ router.post("/reward_investment", auth, async (req, res) => {
   }
 });
 
+router.get("/reward_details", async (req, res) => {
+  const { campaign_id } = req.headers;
+  console.log(campaign_id);
+  try {
+    let result = await client.query(
+      `Select campaign_reward_id,campaign_reward_name,campaign_reward_amount,campaign_reward_description from campaign_reward where campaign_id=${campaign_id}`
+    );
+    res.send(result.rows);
+  } catch (err) {
+    console.error("Error retrieving data from PostgreSQL database", err);
+    res.status(500).send("Error retrieving data from PostgreSQL database");
+  }
+});
+
+router.get("/equity_details", async (req, res) => {
+  const { campaign_id } = req.headers;
+  try {
+    let result = await client.query(
+      `Select campaign_equity_id,campaign_equity_description,campaign_equity_percentage,campaign_equity_amount from campaign_equity where campaign_id=${campaign_id}`
+    );
+    res.send(result.rows);
+  } catch (err) {
+    console.error("Error retrieving data from PostgreSQL database", err);
+    res.status(500).send("Error retrieving data from PostgreSQL database");
+  }
+});
+
 module.exports = router;

@@ -4,9 +4,14 @@ import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { AuthContext } from "../store/auth-context";
+import AppContext from "./forms/AppContext";
+import URL from "../config/env";
+
 export default function Equity_Card(props) {
+  const { campaign_id } = props;
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
+  const myContext = useContext(AppContext);
   const stripe = useStripe();
 
   const navigation = useNavigation();
@@ -16,7 +21,7 @@ export default function Equity_Card(props) {
       if (props.Total_price < 1)
         return Alert.alert("You cannot donate below 1 INR");
       const response = await fetch(
-        `http://192.168.33.213:3080/payment/pay?token=${token}`,
+        `http://${URL.abc}/payment/pay?token=${token}`,
         {
           method: "POST",
           headers: {
@@ -38,14 +43,11 @@ export default function Equity_Card(props) {
       });
       if (presentSheet.error) return Alert.alert(presentSheet.error.message);
       await axios
-        .post(
-          `http://192.168.33.213:3080/Campaign/equity_investment?token=${token}`,
-          {
-            investor_id: 1,
-            C_equity_id: 2,
-            cid: 3,
-          }
-        )
+        .post(`http://${URL.abc}/Campaign/equity_investment?token=${token}`, {
+          investor_id: myContext.investor_id,
+          C_equity_id: props.equity_id,
+          cid: campaign_id,
+        })
         .then(function (response) {
           console.log(response.data);
           Alert.alert("Payment Complete,thankyou");
@@ -85,8 +87,6 @@ export default function Equity_Card(props) {
             style={styles.Pressable}
             onPress={() => {
               pay();
-              console.log("Equity amount ", props.Total_price);
-              alert("Your Equity amount is : " + props.Total_price);
             }}
           >
             <Text style={styles.text}>SELECT</Text>

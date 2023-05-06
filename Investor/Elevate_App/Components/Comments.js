@@ -16,23 +16,26 @@ import {
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthContext } from "../store/auth-context";
+import AppContext from "./forms/AppContext";
+import URL from "../config/env";
 
-export default function Comments() {
+export default function Comments({ route }) {
+  const { campaign_id } = route.params;
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
+  const myContext = useContext(AppContext);
   const [timeout, settimeout] = useState(true);
   const [comment, setcomment] = useState();
   const postt = async () => {
     console.log(comment);
     await axios
-      .post(`http://192.168.100.78:3080/Campaign/comment?token=${token}`, {
+      .post(`http://${URL.abc}/Campaign/comment?token=${token}`, {
         msg: comment,
-        cid: 1,
-        investor_id: 1,
+        cid: campaign_id,
+        investor_id: myContext.investor_id,
       })
       .then(function (response) {
         console.log(response.data);
-        // console.log(comment);
       })
       .catch(function (error) {
         console.log(error);
@@ -41,7 +44,7 @@ export default function Comments() {
   const gett = async () => {
     settimeout(true);
     await axios
-      .get(`http://192.168.100.78:3080/Campaign/comments/1?token=${token}`)
+      .get(`http://${URL.abc}/Campaign/comments/${campaign_id}?token=${token}`)
       .then(function (response) {
         let tempp = [];
         for (var i = 0; i < response.data.length; i++) {

@@ -30,7 +30,7 @@ export default function TrackUpdates({ route }) {
   useEffect(() => {
     animation.current?.play();
     getdata();
-  }, [d]);
+  }, []);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
