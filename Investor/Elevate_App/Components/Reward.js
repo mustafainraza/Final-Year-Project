@@ -5,6 +5,7 @@ import Equity_Card from "./Equity_Card";
 import axios from "axios";
 import URL from "../config/env";
 import AppContext from "./forms/AppContext";
+import FlashMessage from "react-native-flash-message";
 
 export default function Rewards({ route }) {
   const { campaign_id } = route.params;
@@ -95,6 +96,7 @@ export default function Rewards({ route }) {
           <FlatList data={Rewards_data} renderItem={renderItem} />
         </View>
       )}
+      <FlashMessage position="top" />
     </View>
   );
 }

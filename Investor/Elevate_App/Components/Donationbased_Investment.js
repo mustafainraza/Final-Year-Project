@@ -7,6 +7,9 @@ import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
 import { AuthContext } from "../store/auth-context";
 import URL from "../config/env";
 import AppContext from "./forms/AppContext";
+import { showMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
+
 function Donationbased_Investment({ route, navigation }) {
   const { campaign_id } = route.params;
   const authCtx = useContext(AuthContext);
@@ -58,7 +61,13 @@ function Donationbased_Investment({ route, navigation }) {
           investor_id: myContext.investor_id,
         })
         .then(function (response) {
-          Alert.alert("Payment Successful");
+          // Alert.alert("Payment Successful");
+          showMessage({
+            message: "Transaction Successfull",
+            description: `Successfully Invested ${amount} Rs`,
+            type: "success",
+            duration: 2000,
+          });
         })
         .catch(function (error) {
           console.log(error.msg);
@@ -67,7 +76,7 @@ function Donationbased_Investment({ route, navigation }) {
           setTimeout(() => {
             navigation.goBack();
             navigation.goBack();
-          }, 800);
+          }, 1000);
         });
     } catch (err) {
       console.error(err);
@@ -129,6 +138,7 @@ function Donationbased_Investment({ route, navigation }) {
           <Button title="Submit" color={"#D6252E"} onPress={pay}></Button>
         </View>
       )}
+      <FlashMessage position="top" />
     </StripeProvider>
   );
 }

@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from "../store/auth-context";
 import AppContext from "./forms/AppContext";
 import URL from "../config/env";
+import { showMessage } from "react-native-flash-message";
 
 export default function Equity_Card(props) {
   const { campaign_id } = props;
@@ -49,7 +50,13 @@ export default function Equity_Card(props) {
           cid: campaign_id,
         })
         .then(function (response) {
-          Alert.alert("Payment Successful");
+          // Alert.alert("Payment Successful");
+          showMessage({
+            message: "Transaction Successfull",
+            description: `Successfully Invested ${props.Total_price} Rs`,
+            type: "success",
+            duration: 1500,
+          });
         })
         .catch(function (error) {
           console.log(error.msg);
@@ -58,7 +65,7 @@ export default function Equity_Card(props) {
           setTimeout(() => {
             navigation.goBack();
             navigation.goBack();
-          }, 800);
+          }, 1000);
         });
     } catch (err) {
       console.error(err);

@@ -28,6 +28,7 @@
     "react-native": "0.69.9",
     "react-native-d3-charts": "^0.0.1",
     "react-native-dotenv": "^3.4.2",
+    "react-native-flash-message": "^0.4.1",
     "react-native-keyboard-avoiding-scroll-view": "^1.0.1",
     "react-native-pager-view": "5.4.24",
     "react-native-paper": "^4.12.5",
