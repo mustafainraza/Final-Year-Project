@@ -301,7 +301,7 @@ function RewardScreen() {
   };
 
   useEffect(() => {
-    getRewards(rewardset);
+    getRewards();
   }, []);
 
   return loader ? (
@@ -329,25 +329,4 @@ function RewardScreen() {
     </View>
   );
 }
-
-const rewardset = [
-  {
-    C_NAME: "Camapign 1",
-    ITEM_NAME: "Reward 1",
-    ITEM_DESCRIPTION: "This is project Reward 1 description",
-    quantity: 1,
-  },
-  {
-    C_NAME: "Camapign 2",
-    ITEM_NAME: "Reward 2",
-    ITEM_DESCRIPTION: "This is project Reward 2 description",
-    quantity: 2,
-  },
-  {
-    C_NAME: "Camapign 3",
-    ITEM_NAME: "Reward 3",
-    ITEM_DESCRIPTION: "This is project Reward 3 description",
-    quantity: 3,
-  },
-];
 export default Profile;

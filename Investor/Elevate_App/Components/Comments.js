@@ -72,17 +72,32 @@ export default function Comments({ route }) {
     >
       <View>
         {item.investor_image !== null ? (
-          <Image
-            style={{
-              height: 50,
-              borderRadius: 50,
-              width: 50,
-            }}
-            source={{ uri: "data:image/jpeg;base64," + item.investor_image }}
-          />
+          item.investor_image !== "data:image/jpg;base64,null" ? (
+            <Image
+              style={{
+                height: 50,
+                borderRadius: 50,
+                width: 50,
+              }}
+              source={{
+                uri: `data:image/jpg;base64,${item.investor_image}`,
+              }}
+            />
+          ) : (
+            <Image
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 50,
+              }}
+              source={require("../assets/user.png")}
+            />
+          )
         ) : (
           <Image
             style={{
+              height: 50,
+              width: 50,
               borderRadius: 50,
             }}
             source={require("../assets/user.png")}

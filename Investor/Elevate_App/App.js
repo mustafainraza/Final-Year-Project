@@ -52,7 +52,7 @@ function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
   const [Is_data, SetIs_data] = useState(true);
-  const [imageset, setimageset] = useState(true);
+  const [imageset, setimageset] = useState(false);
   const [email, setEmail] = useState("");
   const [check, setcheck] = useState("");
   const [pickedImagePath, setPickedImagePath] = useState(null);

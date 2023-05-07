@@ -111,18 +111,12 @@ function Edit_Profile_Screen({ navigation }) {
                 }}
               />
             ) : (
-              <Avatar.Image
-                size={100}
-                source={require("../assets/Userr.png")}
-              />
+              <Avatar.Image size={100} source={require("../assets/user.png")} />
             )
           ) : (
             (myContext.setPickedImagePath("data:image/jpg;base64,null"),
             (
-              <Avatar.Image
-                size={100}
-                source={require("../assets/Userr.png")}
-              />
+              <Avatar.Image size={100} source={require("../assets/user.png")} />
             ))
           )}
           <Button
@@ -151,18 +145,12 @@ function Edit_Profile_Screen({ navigation }) {
                 }}
               />
             ) : (
-              <Avatar.Image
-                size={100}
-                source={require("../assets/Userr.png")}
-              />
+              <Avatar.Image size={100} source={require("../assets/user.png")} />
             )
           ) : (
             (myContext.setPickedImagePath("data:image/jpg;base64,null"),
             (
-              <Avatar.Image
-                size={100}
-                source={require("../assets/Userr.png")}
-              />
+              <Avatar.Image size={100} source={require("../assets/user.png")} />
             ))
           )}
           <View style={{ marginBottom: "2%" }}></View>
@@ -354,13 +342,13 @@ function Edit_Profile_Screen({ navigation }) {
                   ) : (
                     <Avatar.Image
                       size={100}
-                      source={require("../assets/Userr.png")}
+                      source={require("../assets/user.png")}
                     />
                   )
                 ) : (
                   <Avatar.Image
                     size={100}
-                    source={require("../assets/Userr.png")}
+                    source={require("../assets/user.png")}
                   />
                 )}
               </View>
@@ -445,13 +433,13 @@ function Edit_Profile_Screen({ navigation }) {
                   ) : (
                     <Avatar.Image
                       size={100}
-                      source={require("../assets/Userr.png")}
+                      source={require("../assets/user.png")}
                     />
                   )
                 ) : (
                   <Avatar.Image
                     size={100}
-                    source={require("../assets/Userr.png")}
+                    source={require("../assets/user.png")}
                   />
                 )}
               </View>
