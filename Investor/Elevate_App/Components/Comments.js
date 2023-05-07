@@ -27,16 +27,13 @@ export default function Comments({ route }) {
   const [timeout, settimeout] = useState(true);
   const [comment, setcomment] = useState();
   const postt = async () => {
-    console.log(comment);
     await axios
       .post(`http://${URL.abc}/Campaign/comment?token=${token}`, {
         msg: comment,
         cid: campaign_id,
         investor_id: myContext.investor_id,
       })
-      .then(function (response) {
-        console.log(response.data);
-      })
+      .then(function (response) {})
       .catch(function (error) {
         console.log(error);
       });

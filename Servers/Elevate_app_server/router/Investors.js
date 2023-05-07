@@ -19,7 +19,6 @@ router.post("/register", (req, res) => {
   try {
     // Get user input
     const { name, email, password, CNIC, contactno } = req.body;
-    console.log(name, email, password, CNIC, contactno);
     // console.log(email + " " + password);
     // const first_name = "Zain";
     // const last_name = "Shakir";
@@ -52,9 +51,10 @@ router.post("/register", (req, res) => {
           //     });
           client.query(
             `INSERT INTO investor(
-              investor_name,investor_email,investor_password,investor_cnic,investor_contact)
-                  VALUES ( '${name}', '${email.toLowerCase()}', '${encryptedPassword}', '${CNIC}','${contactno}')`,
+             investor_id,investor_name,investor_email,investor_password,investor_cnic,investor_contact)
+                  VALUES ( Default,'${name}', '${email.toLowerCase()}', '${encryptedPassword}', '${CNIC}','${contactno}')`,
             (error, result) => {
+              console.log("record inserted");
               // console.log(result.rows);
               // Create token
               const token = jwt.sign(
@@ -65,6 +65,9 @@ router.post("/register", (req, res) => {
                 }
               );
               res.status(201).send(token);
+              if (error) {
+                console.log(error);
+              }
             }
           );
         }

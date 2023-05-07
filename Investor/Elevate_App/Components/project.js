@@ -29,7 +29,11 @@ export default function Project(props) {
     setbackers(
       props.backed == null || props.backed == undefined ? 0 : props.backed
     );
-    sethours(props.hours == null || props.hours == undefined ? 0 : props.hours);
+    sethours(
+      props.hours == null || props.hours == undefined || props.hours < 0
+        ? 0
+        : props.hours
+    );
     if (props.A) {
       setcountlike(props.A.all_likes);
     }
@@ -83,7 +87,7 @@ export default function Project(props) {
             borderTopLeftRadius: route.name == "Details" ? 0 : 30,
             borderTopRightRadius: route.name == "Details" ? 0 : 30,
           }}
-          source={{ uri: "data:image/jpeg;base64," + props.data }}
+          source={{ uri: props.data }}
         />
         {!props.isbacked ? (
           <Pressable

@@ -13,6 +13,7 @@ import axios from "axios";
 import AppContext from "./forms/AppContext";
 import { AuthContext } from "../store/auth-context";
 import URL from "../config/env";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Campaign({ navigation, route }) {
   const authCtx = useContext(AuthContext);
@@ -23,6 +24,7 @@ export default function Campaign({ navigation, route }) {
   const [isdata, setisdata] = useState(true);
   const [likes, setlikes] = useState([]);
   const [countlikes, setCountlikes] = useState([]);
+  const isFocused = useIsFocused();
 
   const animationRef = useRef(null);
 
@@ -49,7 +51,7 @@ export default function Campaign({ navigation, route }) {
           setData(temp);
           setTimeout(() => {
             settime(false);
-          }, 2500);
+          }, 500);
         }
       })
       .catch(function (error) {
@@ -100,7 +102,7 @@ export default function Campaign({ navigation, route }) {
     animationRef.current?.play();
     sad();
     total_likes();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     if (myContext.investor_id) {
@@ -180,7 +182,7 @@ export default function Campaign({ navigation, route }) {
             <LottieView
               autoPlay
               loop={timeout}
-              duration={4000}
+              duration={3000}
               ref={(animation) => {
                 animationRef.current = animation;
               }}

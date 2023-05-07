@@ -27,10 +27,7 @@ function Edit_Profile_Screen({ navigation }) {
         contact: contactno,
         token: token,
       })
-      .then(function (response) {
-        console.log(new Date().toString());
-        alert(response.data);
-      })
+      .then(function (response) {})
       .catch(function (error) {
         console.log(error);
       });

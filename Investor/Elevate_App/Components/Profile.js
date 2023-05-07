@@ -242,6 +242,7 @@ function BackedScrenn({ navigation }) {
             fontWeight: "bold",
             fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
             fontSize: 24,
+            color: "#D6252E",
           }}
         >
           {backedscreen_text1}

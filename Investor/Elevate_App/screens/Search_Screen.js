@@ -136,7 +136,7 @@ const Search_Screen = ({ navigation }) => {
                 width: "100%",
                 borderRadius: 20,
               }}
-              source={{ uri: "data:image/jpeg;base64," + item.campaign_image }}
+              source={{ uri: item.campaign_image }}
             />
           </View>
           <View>

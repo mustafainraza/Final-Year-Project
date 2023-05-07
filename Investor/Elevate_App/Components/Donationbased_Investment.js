@@ -7,7 +7,7 @@ import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
 import { AuthContext } from "../store/auth-context";
 import URL from "../config/env";
 import AppContext from "./forms/AppContext";
-function Donationbased_Investment({ route }) {
+function Donationbased_Investment({ route, navigation }) {
   const { campaign_id } = route.params;
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
@@ -26,7 +26,8 @@ function Donationbased_Investment({ route }) {
   }
   const pay = async () => {
     try {
-      if (amount < 1) return Alert.alert("You cannot donate below 1 Rupees");
+      if (amount < 200)
+        return Alert.alert("You cannot donate below 200 Rupees");
       //sending request
       const response = await fetch(
         `http://${URL.abc}/payment/pay?token=${token}`,
@@ -57,11 +58,16 @@ function Donationbased_Investment({ route }) {
           investor_id: myContext.investor_id,
         })
         .then(function (response) {
-          console.log(response.data);
-          Alert.alert("Payment Complete,thankyou");
+          Alert.alert("Payment Successful");
         })
         .catch(function (error) {
           console.log(error.msg);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            navigation.goBack();
+            navigation.goBack();
+          }, 800);
         });
     } catch (err) {
       console.error(err);

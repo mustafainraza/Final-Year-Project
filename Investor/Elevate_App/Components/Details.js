@@ -17,11 +17,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import RenderProfile from "./RenderProfile";
 import { AuthContext } from "../store/auth-context";
 import URL from "../config/env";
+import AppContext from "./forms/AppContext";
 
 export default function Details({ navigation, route }) {
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
-  const [set, setData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
   const [campaignerdetails, setCampaignerdetails] = useState([]);
@@ -29,6 +29,8 @@ export default function Details({ navigation, route }) {
   const { campaign_id } = route.params;
   const [hours, sethours] = useState(props.hours);
   const [backerdetails, setbackerdetails] = useState([]);
+  const myContext = useContext(AppContext);
+  const [textString, setString] = useState("BACK THIS PROJECT");
 
   const track_update = false;
 
@@ -68,6 +70,11 @@ export default function Details({ navigation, route }) {
       })
       .then(function (response) {
         setbackerdetails(response.data);
+        response.data.find((i) => {
+          i.investor_id == myContext.investor_id
+            ? setString("ALREADY INVESTED")
+            : setString("BACK THIS PROJECT");
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -75,7 +82,6 @@ export default function Details({ navigation, route }) {
   };
 
   useEffect(() => {
-    setData(Set);
     getcampaignerdetails();
     getbackers();
   }, []);
@@ -373,7 +379,9 @@ export default function Details({ navigation, route }) {
       ></View>
 
       <Pressable
-        disabled={hours <= 0 ? true : false}
+        disabled={backerdetails.find((i) => {
+          return i.investor_id == myContext.investor_id ? true : false;
+        })}
         android_ripple={{ color: "lightgreen" }}
         style={{
           marginTop: "3%",
@@ -412,7 +420,7 @@ export default function Details({ navigation, route }) {
               fontWeight: "bold",
             }}
           >
-            Back This Project
+            {textString}
           </Text>
         ) : (
           <Text
@@ -430,17 +438,6 @@ export default function Details({ navigation, route }) {
     </View>
   );
 }
-
-const Set = [
-  {
-    first_name: "Mustafain",
-    funds: 3000,
-  },
-  {
-    first_name: "Raza",
-    funds: 2000,
-  },
-];
 
 const styles = StyleSheet.create({
   centeredView: {

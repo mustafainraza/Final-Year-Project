@@ -32,7 +32,7 @@ const BackedProjects = (props) => {
         <Image
           style={styles.tinyLogo}
           source={{
-            uri: "data:image/jpeg;base64," + props.item.campaign_image,
+            uri: props.item.campaign_image,
           }}
         />
       </View>

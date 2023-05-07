@@ -18,8 +18,8 @@ export default function Equity_Card(props) {
 
   const pay = async () => {
     try {
-      if (props.Total_price < 1)
-        return Alert.alert("You cannot donate below 1 INR");
+      if (props.Total_price < 200)
+        return Alert.alert("You cannot donate below 200 Rupees");
       const response = await fetch(
         `http://${URL.abc}/payment/pay?token=${token}`,
         {
@@ -49,11 +49,16 @@ export default function Equity_Card(props) {
           cid: campaign_id,
         })
         .then(function (response) {
-          console.log(response.data);
-          Alert.alert("Payment Complete,thankyou");
+          Alert.alert("Payment Successful");
         })
         .catch(function (error) {
           console.log(error.msg);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            navigation.goBack();
+            navigation.goBack();
+          }, 800);
         });
     } catch (err) {
       console.error(err);

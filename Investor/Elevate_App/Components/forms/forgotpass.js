@@ -5,7 +5,7 @@ import Flatbutton from "../ui/Flatbutton";
 import { useNavigation } from "@react-navigation/native";
 import Input from "../ui/Input";
 import Button from "../ui/buttons";
-import URL from '../../config/env'
+import URL from "../../config/env";
 const Forgotpass = () => {
   const edit = async () => {
     await axios
@@ -13,7 +13,6 @@ const Forgotpass = () => {
         email: enteredEmail,
       })
       .then(function (response) {
-        console.log(new Date().toString());
         alert(response.data);
       })
       .catch(function (error) {
