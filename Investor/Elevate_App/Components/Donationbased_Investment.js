@@ -9,8 +9,10 @@ import URL from "../config/env";
 import AppContext from "./forms/AppContext";
 import { showMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
+import registerNNPushToken from "native-notify";
 
 function Donationbased_Investment({ route, navigation }) {
+  registerNNPushToken(7826, "mvSOfkOfA7r4kMHdE3f9UG");
   const { campaign_id } = route.params;
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
@@ -19,6 +21,26 @@ function Donationbased_Investment({ route, navigation }) {
   const [amount, setamount] = useState("");
   const [text, settext] = useState(true);
   const [errprompt, seterrprompt] = useState({});
+
+  const notify = async (e) => {
+    await axios
+      .post(`https://app.nativenotify.com/api/notification`, {
+        appId: 7826,
+        appToken: "mvSOfkOfA7r4kMHdE3f9UG",
+        title: "Donate For Good",
+        body: `We have recieved a donation of ${e} Rs`,
+        dateSent: new Date().toLocaleTimeString(),
+        pushData: { yourProperty: "yourPropertyValue" },
+        // bigPictureURL: Big picture URL as a string
+      })
+      .then(function (response) {
+        console.log("notification sent");
+      })
+      .catch(function (error) {
+        console.log(error.msg);
+      });
+  };
+
   function checkcredentials(e1) {
     let errors = {};
     if (e1 === "") {
@@ -68,6 +90,7 @@ function Donationbased_Investment({ route, navigation }) {
             type: "success",
             duration: 2000,
           });
+          notify(amount);
         })
         .catch(function (error) {
           console.log(error.msg);

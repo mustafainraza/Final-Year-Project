@@ -21,7 +21,7 @@ export default function Campaign({ navigation, route }) {
   const myContext = useContext(AppContext);
   const [set, setData] = useState(null);
   const [timeout, settime] = useState(true);
-  const [isdata, setisdata] = useState(true);
+  const [isdata, setisdata] = useState(false);
   const [likes, setlikes] = useState([]);
   const [countlikes, setCountlikes] = useState([]);
   const isFocused = useIsFocused();
@@ -47,6 +47,9 @@ export default function Campaign({ navigation, route }) {
           let temp = [];
           for (var i = 0; i < response.data.length; i++) {
             temp.push(response.data[i]);
+          }
+          if (response.data.length > 0) {
+            setisdata(true);
           }
           setData(temp);
           setTimeout(() => {
@@ -99,9 +102,10 @@ export default function Campaign({ navigation, route }) {
   };
 
   useEffect(() => {
-    animationRef.current?.play();
-    sad();
-    total_likes();
+    // animationRef.current?.play();
+    // sad();
+    // total_likes();
+    refreshdata();
   }, [isFocused]);
 
   useEffect(() => {
