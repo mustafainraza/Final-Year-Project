@@ -16,6 +16,14 @@ import { Platform } from "react-native";
 import { AuthContext } from "../store/auth-context";
 import axios from "axios";
 function Edit_Profile_Screen({ navigation }) {
+  const myContext = useContext(AppContext);
+  const [name, setname] = useState("");
+  const [email, setEmail] = useState("");
+  const [text, settext] = useState(true);
+  const [contactno, setcontactno] = useState("");
+  const [cnic, setcnic] = useState("");
+  const [errprompt, seterrprompt] = useState({});
+  const [show, setshow] = useState(false);
   const authCtx = useContext(AuthContext);
   const token = authCtx.token;
   const edit = async () => {
@@ -68,13 +76,6 @@ function Edit_Profile_Screen({ navigation }) {
       myContext.setPickedImagePath(result.base64);
     }
   };
-  const myContext = useContext(AppContext);
-  const [name, setname] = useState("");
-  const [email, setEmail] = useState("");
-  const [text, settext] = useState(true);
-  const [contactno, setcontactno] = useState("");
-  const [cnic, setcnic] = useState("");
-  const [errprompt, seterrprompt] = useState({});
   function checkcredentials(e1, e2) {
     let errors = {};
     if (e1 === "") {
@@ -97,7 +98,6 @@ function Edit_Profile_Screen({ navigation }) {
       edit();
     }
   };
-  const [show, setshow] = useState(false);
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {Platform.OS === "ios" ? (
@@ -323,8 +323,8 @@ function Edit_Profile_Screen({ navigation }) {
               style={{
                 marginLeft: "5%",
                 marginRight: "5%",
-                marginTop: "83%",
-                marginBottom: "8%",
+                marginTop: "60%",
+                marginBottom: "15%",
                 backgroundColor: "#ffffff",
                 borderRadius: 9,
                 flex: 4,
@@ -392,6 +392,7 @@ function Edit_Profile_Screen({ navigation }) {
                   backgroundColor: "#003047",
                   height: "23%",
                   borderColor: "#dcdcdc",
+                  borderBottomWidth: 1,
                 }}
                 onPress={showImagePicker}
               >
@@ -408,13 +409,37 @@ function Edit_Profile_Screen({ navigation }) {
                   Upload Photo
                 </Text>
               </Pressable>
+              <Pressable
+                style={{
+                  backgroundColor: "#003047",
+                  height: "20%",
+                  borderColor: "#dcdcdc",
+                }}
+                onPress={() => {
+                  navigation.navigate("Camera");
+                  setshow(false);
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "normal",
+                    fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
+                    fontSize: 18,
+                    textAlign: "center",
+                    marginTop: "5.5%",
+                    color: "#f5f5f5",
+                  }}
+                >
+                  Take Photo
+                </Text>
+              </Pressable>
             </View>
           ) : (
             <View
               style={{
                 marginLeft: "5%",
                 marginRight: "5%",
-                marginTop: "89%",
+                marginTop: "60%",
                 marginBottom: "8%",
                 backgroundColor: "#ffffff",
                 borderRadius: 9,
@@ -471,7 +496,7 @@ function Edit_Profile_Screen({ navigation }) {
                     fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
                     fontSize: 18,
                     textAlign: "center",
-                    marginTop: "5.5%",
+                    marginTop: "8.5%",
                     color: "#f5f5f5",
                   }}
                 >
@@ -483,6 +508,7 @@ function Edit_Profile_Screen({ navigation }) {
                   backgroundColor: "#003047",
                   height: "25%",
                   borderColor: "#dcdcdc",
+                  borderBottomWidth: 1,
                 }}
                 onPress={showImagePicker}
               >
@@ -492,11 +518,32 @@ function Edit_Profile_Screen({ navigation }) {
                     fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
                     fontSize: 18,
                     textAlign: "center",
-                    marginTop: "5.5%",
+                    marginTop: "8.5%",
                     color: "#f5f5f5",
                   }}
                 >
                   Upload Photo
+                </Text>
+              </Pressable>
+              <Pressable
+                style={{
+                  backgroundColor: "#003047",
+                  height: "23%",
+                  borderColor: "#dcdcdc",
+                }}
+                onPress={() => navigation.navigate("Camera")}
+              >
+                <Text
+                  style={{
+                    fontWeight: "normal",
+                    fontFamily: Platform.OS === "ios" ? "Arial" : "serif",
+                    fontSize: 18,
+                    textAlign: "center",
+                    marginTop: "8.5%",
+                    color: "#f5f5f5",
+                  }}
+                >
+                  Take Photo
                 </Text>
               </Pressable>
             </View>

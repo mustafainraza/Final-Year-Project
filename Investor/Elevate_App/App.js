@@ -12,7 +12,7 @@ import Login from "./screens/Login";
 import Signup from "./screens/Signup";
 import { Pressable } from "react-native";
 import Forgotpass from "./Components/forms/forgotpass";
-
+import Cameraa from "./Components/Camera";
 import Start from "./screens/start";
 import Drawer_Nav from "./Components/Drawer_Nav";
 import Details from "./Components/Details";
@@ -218,6 +218,17 @@ function AuthenticatedStack() {
           }}
           name="Comments"
           component={Comments}
+        ></Stack.Screen>
+        <Stack.Screen
+          options={{
+            headerShown: false,
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+            contentStyle: { backgroundColor: "#ffffff" },
+            headerStyle: { backgroundColor: "#ffffff" },
+          }}
+          name="Camera"
+          component={Cameraa}
         ></Stack.Screen>
       </Stack.Navigator>
     </AppContext.Provider>
