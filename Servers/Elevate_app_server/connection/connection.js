@@ -3,7 +3,7 @@ const client = new Client({
   host: "localhost",
   user: "postgres",
   port: 5432,
-  password: "basit3abbas3",
+  password: "12345",
   database: "Elevate",
 });
 // const { Client } = require("pg");
