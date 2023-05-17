@@ -72,7 +72,7 @@ export default function Comments({ route }) {
     >
       <View>
         {item.investor_image !== null ? (
-          item.investor_image !== "data:image/jpg;base64,null" ? (
+          item.investor_image !== null ? (
             <Image
               style={{
                 height: 50,
@@ -80,7 +80,7 @@ export default function Comments({ route }) {
                 width: 50,
               }}
               source={{
-                uri: `data:image/jpg;base64,${item.investor_image}`,
+                uri: `${item.investor_image}`,
               }}
             />
           ) : (
