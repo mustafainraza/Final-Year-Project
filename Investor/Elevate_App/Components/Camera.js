@@ -4,6 +4,7 @@ import { Camera } from "expo-camera";
 import AppContext from "./forms/AppContext";
 import axios from "axios";
 import URL from "../config/env";
+import { AuthContext } from "../store/auth-context";
 
 export default function Cameraa({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -11,6 +12,8 @@ export default function Cameraa({ navigation }) {
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   const cameraRef = useRef(null);
   const myContext = useContext(AppContext);
+  const authCtx = useContext(AuthContext);
+  const token = authCtx.token;
 
   useEffect(() => {
     (async () => {
@@ -21,10 +24,10 @@ export default function Cameraa({ navigation }) {
 
   const takePicture = async () => {
     myContext.setimageset(true);
-    myContext.setPickedImagePath("data:image/jpg;base64,null");
+    myContext.setPickedImagePath(null);
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync({ base64: true });
-      myContext.setPickedImagePath(photo.base64);
+      myContext.setPickedImagePath(`data:image/jpeg;base64,` + photo.base64);
       setCapturedPhoto(photo.uri);
     }
   };
@@ -40,8 +43,7 @@ export default function Cameraa({ navigation }) {
     await axios
       .patch(`http://${URL.abc}/profile/editprofile`, {
         image: myContext.pickedImagePath,
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im11ckBnbWFpbC5jb20iLCJuYW1lIjoibXVydGF6YSIsImlhdCI6MTY4MzY4NzcxMiwiZXhwIjoxNzE1MjIzNzEyfQ.H2gNl3ORUbRSIi4IhNFIUkh9W8ByQpcwXqiHfMTVNME",
+        token: token,
       })
       .then(function (response) {
         alert(response.data);

@@ -64,7 +64,7 @@ function Edit_Profile_Screen({ navigation }) {
 
   const showImagePicker = async () => {
     myContext.setimageset(true);
-    myContext.setPickedImagePath("data:image/jpg;base64,null");
+    myContext.setPickedImagePath(null);
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
@@ -73,7 +73,7 @@ function Edit_Profile_Screen({ navigation }) {
     }
     const result = await ImagePicker.launchImageLibraryAsync({ base64: true });
     if (!result.cancelled) {
-      myContext.setPickedImagePath(result.base64);
+      myContext.setPickedImagePath(`data:image/jpeg;base64,` + result.base64);
     }
   };
   function checkcredentials(e1, e2) {
@@ -103,18 +103,18 @@ function Edit_Profile_Screen({ navigation }) {
       {Platform.OS === "ios" ? (
         <View style={{ flex: 1, alignItems: "center", marginTop: "4%" }}>
           {myContext.imageset ? (
-            myContext.pickedImagePath !== "data:image/jpg;base64,null" ? (
+            myContext.pickedImagePath !== null ? (
               <Avatar.Image
                 size={100}
                 source={{
-                  uri: `data:image/jpg;base64,${myContext.pickedImagePath}`,
+                  uri: `${myContext.pickedImagePath}`,
                 }}
               />
             ) : (
               <Avatar.Image size={100} source={require("../assets/user.png")} />
             )
           ) : (
-            (myContext.setPickedImagePath("data:image/jpg;base64,null"),
+            (myContext.setPickedImagePath(null),
             (
               <Avatar.Image size={100} source={require("../assets/user.png")} />
             ))
@@ -137,18 +137,18 @@ function Edit_Profile_Screen({ navigation }) {
       ) : (
         <View style={{ flex: 1, alignItems: "center", marginTop: "4%" }}>
           {myContext.imageset ? (
-            myContext.pickedImagePath !== "data:image/jpg;base64,null" ? (
+            myContext.pickedImagePath !== null ? (
               <Avatar.Image
                 size={100}
                 source={{
-                  uri: `data:image/jpg;base64,${myContext.pickedImagePath}`,
+                  uri: `${myContext.pickedImagePath}`,
                 }}
               />
             ) : (
               <Avatar.Image size={100} source={require("../assets/user.png")} />
             )
           ) : (
-            (myContext.setPickedImagePath("data:image/jpg;base64,null"),
+            (myContext.setPickedImagePath(null),
             (
               <Avatar.Image size={100} source={require("../assets/user.png")} />
             ))
@@ -332,11 +332,11 @@ function Edit_Profile_Screen({ navigation }) {
             >
               <View style={{ alignItems: "center", marginTop: "5%" }}>
                 {myContext.imageset ? (
-                  myContext.pickedImagePath !== "data:image/jpg;base64,null" ? (
+                  myContext.pickedImagePath !== null ? (
                     <Avatar.Image
                       size={100}
                       source={{
-                        uri: `data:image/jpg;base64,${myContext.pickedImagePath}`,
+                        uri: `${myContext.pickedImagePath}`,
                       }}
                     />
                   ) : (
@@ -448,11 +448,11 @@ function Edit_Profile_Screen({ navigation }) {
             >
               <View style={{ alignItems: "center", marginTop: "5%" }}>
                 {myContext.imageset ? (
-                  myContext.pickedImagePath !== "data:image/jpg;base64,null" ? (
+                  myContext.pickedImagePath !== null ? (
                     <Avatar.Image
                       size={100}
                       source={{
-                        uri: `data:image/jpg;base64,${myContext.pickedImagePath}`,
+                        uri: `${myContext.pickedImagePath}`,
                       }}
                     />
                   ) : (
