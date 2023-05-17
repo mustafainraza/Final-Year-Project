@@ -1,14 +1,17 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaBars, FaHome, FaUserFriends } from "react-icons/fa";
-import {GiSandsOfTime} from 'react-icons/gi';
-import {MdPendingActions, MdOutlinePending} from "react-icons/md";
+import { GiSandsOfTime } from 'react-icons/gi';
+import { MdPendingActions, MdOutlinePending } from "react-icons/md";
 import { FiUsers } from 'react-icons/fi';
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BiLogOut } from "react-icons/bi";
+import { BsClipboardCheck, BsClipboardX } from "react-icons/bs";
 import SidebarMenu from "./SidebarMenu";
 import "./sidebarstyle.css";
+import axios from "axios";
+import { useSnackBar } from "../../Hooks/useSnakeBar";
 const routes = [
   {
     path: "/",
@@ -17,9 +20,26 @@ const routes = [
   },
   {
     path: "/",
+    name: "Accepted Request",
+    icon: <BsClipboardCheck />,
+    subRoutes: [
+      {
+        path: "/campaignaccepted",
+        name: "Accepted Campaigns",
+        icon: <MdOutlinePending />,
+      },
+      {
+        path: "/campaigntimeaccepted",
+        name: "Time Extend Accepted",
+        icon: <GiSandsOfTime />,
+      },
+    ]
+  },
+  {
+    path: "/",
     name: "Pending Request",
     icon: <MdPendingActions />,
-    subRoutes:[
+    subRoutes: [
       {
         path: "/campaignrequest",
         name: "Campaigns Request",
@@ -28,6 +48,23 @@ const routes = [
       {
         path: "/campaigntimerequest",
         name: "Time Extend Request",
+        icon: <GiSandsOfTime />,
+      },
+    ]
+  },
+  {
+    path: "/",
+    name: "Rejected Request",
+    icon: <BsClipboardX />,
+    subRoutes: [
+      {
+        path: "/campaignrejected",
+        name: "Rejected Campaigns",
+        icon: <MdOutlinePending />,
+      },
+      {
+        path: "/campaigntimerejected",
+        name: "Time Extend Rejected",
         icon: <GiSandsOfTime />,
       },
     ]
@@ -47,6 +84,7 @@ const routes = [
 const SideBar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const showPopUp = useSnackBar();
 
   const showAnimation = {
     hidden: {
@@ -146,28 +184,29 @@ const SideBar = ({ children }) => {
               <button
                 className="sidebar-logout-btn"
                 onClick={() => {
-                  window.location.reload(false);
-                  // axios.get(
-                  //     `http://localhost:3300/api/logout`,
-                  //     {
-                  //       headers: {
-                  //         "Content-Type": "application/json",
-                  //         Accept: "application/json",
-                  //       },
-                  //       withCredentials: true,
-                  //     }
-                  //   )
-                  //   .then(function (response) {
-                  //     console.log(response);
-                  //     if (response.status === 200) {
-                  //       console.log(response);
-                  //       window.location.reload(false);
-                  //     }
-                  //   })
-                  //   .catch(function (error) {
-                  //     console.log(error.response.data.msg);
-                  //     alert(error.response.data.msg);
-                  //   });
+                  // window.location.reload(false);
+                  axios.get(
+                      `http://localhost:3300/api/admin/logout`,
+                      {
+                        headers: {
+                          "Content-Type": "application/json",
+                          Accept: "application/json",
+                        },
+                        withCredentials: true,
+                      }
+                    )
+                    .then(function (response) {
+                      console.log(response);
+                      if (response.status === 200) {
+                        console.log(response);
+                        window.location.reload(false);
+                      }
+                    })
+                    .catch(function (error) {
+                      console.log(error.response.data.msg);
+                      showPopUp(error.response.data.msg, "error");
+
+                    });
                 }}
               >
                 <span style={{ paddingRight: "1rem" }}>

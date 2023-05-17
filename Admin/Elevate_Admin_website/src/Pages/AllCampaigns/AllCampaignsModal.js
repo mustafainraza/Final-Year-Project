@@ -1,13 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CampaignComments from "../../Components/CampaignDetails/CampaignComments";
 import Updates from "../../Components/CampaignDetails/UpdatesList";
 import InvestmentList from "./InvestmentList";
 import ProgressBar from "./ProgressBar";
+import axios from "axios";
+import { useSnackBar } from "../../Hooks/useSnakeBar";
 
-function AllCampaignsModal({ setOpenModal, dataForModal }) {
+function AllCampaignsModal({ setOpenModal, dataForModal, setDataForModal }) {
+  const showPopUp = useSnackBar();
   const [invertorsFlag, setInvestorFlag] = useState(false);
   const [updateFlag, setUpdateFlag] = useState(false);
   const [commentsFlag, setCommentsFlag] = useState(false);
+
+  useEffect(()=>{
+    axios.get(
+      // body: JSON.stringify({
+      `${process.env.REACT_APP_API_URL}/api/campaigner/getcampaigndetails/${dataForModal.campaign_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        withCredentials: true,
+      }
+    )
+    .then(function (response) {
+      console.log(response.data);
+      setDataForModal({...dataForModal, milestones: response.data.milestones, investors: response.data.investors , comments:response.data.comments, rejected: response.data.rejected})
+    })
+    .catch(function (error) {
+      console.log(error.response.data.msg);
+      showPopUp(error.response.data.msg, "error");
+
+    });
+  },[dataForModal.campaign_id])
+
 
   return (
     <div style={{marginTop:'-2rem'}} className="modalBackground">
@@ -23,7 +50,7 @@ function AllCampaignsModal({ setOpenModal, dataForModal }) {
             X
           </button>
           </div>
-          <CampaignComments/>
+          <CampaignComments dataForModal={dataForModal} />
           </>
           ): (
             <>
@@ -37,14 +64,14 @@ function AllCampaignsModal({ setOpenModal, dataForModal }) {
           </button>
         </div>
         <div className="modaltitle">
-          <span style={{textDecoration:'underline'}}>{dataForModal.title}  </span>
-          <span style={{paddingLeft:'1.5rem', fontSize:'1.3rem', fontWeight:'100', color:'#c59d5f'}}>(Time left: {dataForModal.hoursLeft}hr)</span>
+          <span style={{textDecoration:'underline'}}>{dataForModal.campaign_title}  </span>
+          <span style={{paddingLeft:'1.5rem', fontSize:'1.3rem', fontWeight:'100', color:'#c59d5f'}}>(Days left: {dataForModal.days_left.days} days)</span>
         </div>
         <div className="body" style={{paddingTop:'2rem'}}>
-          <img src={dataForModal.img} alt={dataForModal.title} style={{height:'15rem', paddingRight:'1rem'}} />
-          <p style={{textAlign:"left", height:'13rem', overflow:'hidden scroll', paddingRight:'1rem', fontSize:'1.3rem'}}>{dataForModal.desc}</p>
+          <img src={dataForModal.campaign_image} alt={dataForModal.campaign_title} style={{height:'15rem', paddingRight:'1rem'}} />
+          <p style={{textAlign:"left", height:'13rem', overflow:'hidden scroll', paddingRight:'1rem', fontSize:'1.3rem'}}>{dataForModal.campaign_description}</p>
         </div>
-          <div style={{  height:'1rem', fontSize:'1rem', textDecoration:'underline', padding:'5px 23px',borderRadius:30, color:'#4267B2', fontWeight:800, textAlign:'right'}}><span style={{cursor:'pointer'}} onClick={()=>{console.log("like button Clicked")}}>Likes: {dataForModal.like}</span></div>
+          <div style={{  height:'1rem', fontSize:'1rem', textDecoration:'underline', padding:'5px 23px',borderRadius:30, color:'#4267B2', fontWeight:800, textAlign:'right'}}><span style={{cursor:'pointer'}} onClick={()=>{console.log("like button Clicked")}}>Likes: {dataForModal.likes}</span></div>
           <ProgressBar progress={dataForModal.progress} height={22} />
           </>
         )}
@@ -59,7 +86,7 @@ function AllCampaignsModal({ setOpenModal, dataForModal }) {
             >
             Cancel
           </button>
-          <button onClick={()=>{setUpdateFlag(true)}}>Updates</button>
+          <button onClick={()=>{setUpdateFlag(true)}}>Milestone</button>
           <button style={{backgroundColor:'white', color:' cornflowerblue', border:'1px solid'}} onClick={()=>{setInvestorFlag(true)}}>Investors</button>
           <button style={{backgroundColor:'white', color:' cornflowerblue', border:'1px solid'}} onClick={()=>{setCommentsFlag(true)}}>Comments</button>
             {/* {dataForModal.hoursLeft<=30 && dataForModal.progress!==100?<><button style={{width:'17rem', backgroundColor:'crimson' }}>Time-Extend Request</button></>:null} */}
