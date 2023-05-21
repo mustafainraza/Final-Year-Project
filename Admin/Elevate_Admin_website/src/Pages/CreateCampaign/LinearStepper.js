@@ -319,7 +319,9 @@ const LinaerStepper = () => {
               onSubmit={campaignType.handleSubmit(hanldeCampaignTypeSubmit)}
             >
               {getStepContent(activeStep, campType)}
-              {campType !== "" && campType!=='profit' && campType!=='donation' ? (
+              {campType !== "" &&
+              campType !== "profit" &&
+              campType !== "donation" ? (
                 <div style={{ textAlign: "right", margin: "1rem" }}>
                   <Button
                     type="submit"
@@ -327,14 +329,14 @@ const LinaerStepper = () => {
                     color="primary"
                     endIcon={<GrAdd />}
                   >
-                    Add another Reward
+                    Add
                   </Button>
                 </div>
               ) : null}
             </form>
           </FormProvider>
           {disableSubmitFlag ? null : (
-            <table style={{ margin: "auto", height:'auto' }}>
+            <table style={{ margin: "auto", height: "auto" }}>
               <thead>
                 <tr>
                   <th
@@ -488,26 +490,24 @@ const LinaerStepper = () => {
                   .post(
                     // body: JSON.stringify({
                     `http://localhost:3300/api/createcampaign`,
-                      send_to_API,
+                    send_to_API,
                     {
                       headers: {
                         "Content-Type": "application/json",
                         Accept: "application/json",
                       },
-                      withCredentials:true
+                      withCredentials: true,
                     }
                   )
                   .then(function (response) {
                     console.log(response);
                     if (response.status === 200) {
                       showPopUp(response.data, "success");
-
                     }
                   })
                   .catch(function (error) {
                     console.log(error.response.data.msg);
                     showPopUp(error.response.data.msg, "error");
-
                   });
               }}
             >

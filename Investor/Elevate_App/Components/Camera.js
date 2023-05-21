@@ -24,10 +24,10 @@ export default function Cameraa({ navigation }) {
 
   const takePicture = async () => {
     myContext.setimageset(true);
-    myContext.setPickedImagePath(null);
+    myContext.setPickedImagePath("data:image/jpg;base64,null");
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync({ base64: true });
-      myContext.setPickedImagePath(`data:image/jpeg;base64,` + photo.base64);
+      myContext.setPickedImagePath(photo.base64);
       setCapturedPhoto(photo.uri);
     }
   };

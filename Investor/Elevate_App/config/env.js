@@ -1,5 +1,5 @@
 const URL = {
-  abc: "192.168.1.6:3080",
+  abc: "172.16.35.104:3080",
 };
 
 export default URL;

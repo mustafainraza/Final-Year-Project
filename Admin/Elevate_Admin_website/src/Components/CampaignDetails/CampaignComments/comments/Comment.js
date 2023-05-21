@@ -35,7 +35,7 @@ const Comment = ({
       <div className="comment-right-part">
         <div className="comment-content">
           <div className="comment-author">{comment.username}</div>
-          <div style={{fontSize:'1rem'}}>{createdAt}</div>
+          <div style={{ fontSize: "1rem" }}>{createdAt}</div>
         </div>
         {!isEditing && <div className="comment-text">{comment.body}</div>}
         {isEditing && (
@@ -49,7 +49,7 @@ const Comment = ({
             }}
           />
         )}
-        <div className="comment-actions">
+        {/* <div className="comment-actions">
           {canReply && (
             <div
               className="comment-action"
@@ -78,7 +78,7 @@ const Comment = ({
               Delete
             </div>
           )}
-        </div>
+        </div> */}
         {isReplying && (
           <CommentForm
             submitLabel="Reply"

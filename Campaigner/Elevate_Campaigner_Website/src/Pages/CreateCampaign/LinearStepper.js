@@ -37,11 +37,10 @@ function getSteps() {
   ];
 }
 
-
 const LinaerStepper = (props) => {
-  const [milestonesData, setMilestonesData] = useState(props.milestonesData)
+  const [milestonesData, setMilestonesData] = useState(props.milestonesData);
   const [milestoneProgress, setMilestoneProgress] = useState([]);
-  const [noOfMilestones, setNoOfMilestones] = useState(1)
+  const [noOfMilestones, setNoOfMilestones] = useState(1);
   function getStepContent(step, campType = "") {
     switch (step) {
       case 0:
@@ -53,7 +52,17 @@ const LinaerStepper = (props) => {
       case 3:
         return <AddPicturesAndVideo />;
       case 4:
-        return <MilestonesDetails milestonesData={milestonesData} setMilestonesData={setMilestonesData} noOfMilestones={noOfMilestones} setNoOfMilestones={setNoOfMilestones} overallData={overallData} milestoneProgress={milestoneProgress} setMilestoneProgress={setMilestoneProgress}/>;
+        return (
+          <MilestonesDetails
+            milestonesData={milestonesData}
+            setMilestonesData={setMilestonesData}
+            noOfMilestones={noOfMilestones}
+            setNoOfMilestones={setNoOfMilestones}
+            overallData={overallData}
+            milestoneProgress={milestoneProgress}
+            setMilestoneProgress={setMilestoneProgress}
+          />
+        );
       case 5:
         return <CampaignInvestmentType campType={campType} />;
       default:
@@ -119,16 +128,18 @@ const LinaerStepper = (props) => {
 
   const handleNext = (data) => {
     setOverallData(data);
-    console.log(data, 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
-    props.setData(data)
+    console.log(
+      data,
+      "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+    );
+    props.setData(data);
     if (activeStep >= 3) {
-
       let send_to_API = {
         ...overallData,
         milestonesData: milestonesData,
         picture: images,
       };
-      props.setData(send_to_API)
+      props.setData(send_to_API);
     }
     // }
 
@@ -227,7 +238,8 @@ const LinaerStepper = (props) => {
                     skip
                   </Button>
                 )}
-                {(images.length === 0 && activeStep === 3) || (milestonesData.length <= 2 && activeStep === 4) ? (
+                {(images.length === 0 && activeStep === 3) ||
+                (milestonesData.length <= 2 && activeStep === 4) ? (
                   <span
                     style={{
                       margin: "1rem",
@@ -338,8 +350,8 @@ const LinaerStepper = (props) => {
           ) : null}
           <FormProvider {...campaignType}>
             {campType !== "" &&
-              campType !== "profit" &&
-              campType !== "donation" ? (
+            campType !== "profit" &&
+            campType !== "donation" ? (
               <form
                 onSubmit={campaignType.handleSubmit(hanldeCampaignTypeSubmit)}
               >
@@ -351,7 +363,7 @@ const LinaerStepper = (props) => {
                     color="primary"
                     endIcon={<GrAdd />}
                   >
-                    Add another Reward
+                    Add
                   </Button>
                 </div>
               </form>
@@ -519,7 +531,7 @@ const LinaerStepper = (props) => {
                     campType === "" ||
                     campType === "reward" ||
                     campType === "equity") &
-                    (disableSubmitFlag || campaignTypeArr.length === 0)
+                  (disableSubmitFlag || campaignTypeArr.length === 0)
                     ? "#0001"
                     : "#003047",
                 color:
@@ -528,7 +540,7 @@ const LinaerStepper = (props) => {
                     campType === "" ||
                     campType === "reward" ||
                     campType === "equity") &
-                    (disableSubmitFlag || campaignTypeArr.length === 0)
+                  (disableSubmitFlag || campaignTypeArr.length === 0)
                     ? "#0006"
                     : "white",
               }}
@@ -538,11 +550,11 @@ const LinaerStepper = (props) => {
               // onClick={handleNext}
               disabled={
                 (campType === "profit") &
-                (profitPercentage <= 0 || profitPercentage > 80) ||
+                  (profitPercentage <= 0 || profitPercentage > 80) ||
                 (campType === "" ||
                   campType === "reward" ||
                   campType === "equity") &
-                (disableSubmitFlag || campaignTypeArr.length === 0)
+                  (disableSubmitFlag || campaignTypeArr.length === 0)
               }
               onClick={() => {
                 setActiveStep(activeStep + 1);
@@ -566,7 +578,7 @@ const LinaerStepper = (props) => {
                 // send_to_API['InvestmentTypeDetails']=campaignTypeArr
                 console.log(send_to_API);
                 setOverallData(send_to_API);
-                props.setData(send_to_API)
+                props.setData(send_to_API);
                 axios
                   .post(
                     // body: JSON.stringify({

@@ -59,11 +59,11 @@ const Profile = ({ navigation }) => {
             }}
           >
             {myContext.imageset ? (
-              myContext.pickedImagePath !== null ? (
+              myContext.pickedImagePath !== "data:image/jpg;base64,null" ? (
                 <Avatar.Image
                   size={100}
                   source={{
-                    uri: `${myContext.pickedImagePath}`,
+                    uri: `data:image/jpg;base64,${myContext.pickedImagePath}`,
                   }}
                 />
               ) : (
@@ -91,11 +91,11 @@ const Profile = ({ navigation }) => {
             }}
           >
             {myContext.imageset ? (
-              myContext.pickedImagePath !== null ? (
+              myContext.pickedImagePath !== "data:image/jpg;base64,null" ? (
                 <Avatar.Image
                   size={100}
                   source={{
-                    uri: `${myContext.pickedImagePath}`,
+                    uri: `data:image/jpg;base64,${myContext.pickedImagePath}`,
                   }}
                 />
               ) : (

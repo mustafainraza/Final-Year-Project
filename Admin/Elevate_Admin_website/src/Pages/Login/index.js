@@ -15,7 +15,6 @@ const Login = ({ setJWTAuthentication }) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const showPopUp = useSnackBar();
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
@@ -28,7 +27,6 @@ const Login = ({ setJWTAuthentication }) => {
     setFromErrors(validate(formValues));
     setIsSubmit(true);
     if (Object.keys(validate(formValues)).length === 0) {
-
       axios
         .post(
           `${process.env.REACT_APP_API_URL}/api/admin/login`,
@@ -41,7 +39,7 @@ const Login = ({ setJWTAuthentication }) => {
               "Content-Type": "application/json",
               Accept: "application/json",
             },
-            withCredentials:true,
+            withCredentials: true,
           }
         )
         .then(function (response) {
@@ -87,7 +85,7 @@ const Login = ({ setJWTAuthentication }) => {
   return (
     <div className="login-signup-container">
       <div className="login-div">
-        {Object.keys(formErrors).length === 0 && isSubmit ? (
+        {/* {Object.keys(formErrors).length === 0 && isSubmit ? (
           <pre
             style={{ color: "white", position: "absolute", left: 10, top: 10 }}
           >
@@ -99,7 +97,7 @@ const Login = ({ setJWTAuthentication }) => {
           >
             {JSON.stringify(formValues, undefined, 2)}
           </pre>
-        )}
+        )} */}
         <div className="login-logo"></div>
         <div className="login-title">Log In</div>
         <form onSubmit={handleSubmit}>
